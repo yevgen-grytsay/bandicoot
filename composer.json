@@ -1,0 +1,26 @@
+{
+  "name": "yevgen-grytsay/bandicoot",
+  "description": "Data transformation",
+  "minimum-stability": "stable",
+  "keywords": [
+    "transform"
+  ],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Yevgen Grytsay",
+      "email": "yevgen_grytsay@mail.ru"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "YevgenGrytsay\\Bandicoot\\": "src/"
+    }
+  }
+}
