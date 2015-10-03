@@ -9,21 +9,6 @@ namespace YevgenGrytsay\Bandicoot\MergeStrategy;
 class NestedArrayMergeStrategy implements MergeStrategyInterface
 {
     /**
-     * @var string
-     */
-    protected $key;
-
-    /**
-     * NestedArrayMergeStrategy constructor.
-     *
-     * @param string $key
-     */
-    public function __construct($key)
-    {
-        $this->key = $key;
-    }
-
-    /**
      * @param $result
      * @param $value
      * @param $key
@@ -32,6 +17,6 @@ class NestedArrayMergeStrategy implements MergeStrategyInterface
      */
     public function merge(&$result, $value, $key)
     {
-        $result[] = array($this->key => $value);
+        $result[] = array($key => $value);
     }
 }

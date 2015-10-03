@@ -3,6 +3,7 @@
 namespace YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
+use YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -49,6 +50,7 @@ class RenderContext implements ContextInterface
     public function run($value)
     {
         $merge = $this->createMerge();
+        $listMerge = $this->createListMerge();
         $result = array();
         /**
          * @var string|int $field
@@ -57,20 +59,13 @@ class RenderContext implements ContextInterface
         foreach ($this->config as $field => $context) {
             $res = $context->run($value);
             if ($context instanceof ListContextInterface) {
-                $this->_mergeList($result, $res, $field);
+                $listMerge->merge($result, $res, $field);
             } else {
                 $merge->merge($result, $res, $field);
             }
         }
 
         return $result;
-    }
-    
-    protected function _mergeList(&$result, array $res, $field)
-    {
-        foreach ($res as $item) {
-            $result[] = array($field => $item);
-        }
     }
 
     /**
@@ -79,5 +74,13 @@ class RenderContext implements ContextInterface
     protected function createMerge()
     {
         return new FieldMergeStrategy();
+    }
+
+    /**
+     * @return \YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy
+     */
+    protected function createListMerge()
+    {
+        return new NestedArrayMergeStrategy();
     }
 }

@@ -2,6 +2,9 @@
 
 namespace YevgenGrytsay\Bandicoot\Context;
 
+use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
+
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
