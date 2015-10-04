@@ -30,13 +30,14 @@ class Builder
     }
 
     /**
-     * @param \Iterator $data
+     * @param \Iterator                                         $data
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface $context
      *
-     * @return IteratorContext
+     * @return \YevgenGrytsay\Bandicoot\Context\IteratorContext
      */
-    public function iterate(\Iterator $data)
+    public function each(\Iterator $data, ContextInterface $context)
     {
-        $context = new IteratorContext($data);
+        $context = new IteratorContext($data, $context);
 
         return $context;
     }

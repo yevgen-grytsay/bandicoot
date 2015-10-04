@@ -76,9 +76,21 @@ class UnwindArrayContext implements ContextInterface
      *
      * @return $this
      */
-    public function render(ContextInterface $render)
+    public function renderArray(ContextInterface $render)
     {
         $this->context = new ArrayRenderContext($render);
+
+        return $this;
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return $this
+     */
+    public function render($config)
+    {
+        $this->context = new RenderContext($config);
 
         return $this;
     }

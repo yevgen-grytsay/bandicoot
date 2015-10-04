@@ -26,11 +26,13 @@ class IteratorContext implements ContextInterface
     /**
      * IteratorContext constructor.
      *
-     * @param \Iterator $iterator
+     * @param \Iterator                                         $iterator
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface $context
      */
-    public function __construct(\Iterator $iterator)
+    public function __construct(\Iterator $iterator, ContextInterface $context)
     {
         $this->iterator = $iterator;
+        $this->context = $context;
     }
 
     /**
@@ -48,19 +50,7 @@ class IteratorContext implements ContextInterface
         }
 
         return $return;
-    }
-
-    /**
-     * @param array $config
-     *
-     * @return RenderContext
-     */
-    public function render(array $config)
-    {
-        $this->context = new RenderContext($config);
-
-        return $this;
-    }
+}
 
     /**
      * @param $type

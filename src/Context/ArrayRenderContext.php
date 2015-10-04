@@ -2,16 +2,12 @@
 
 namespace YevgenGrytsay\Bandicoot\Context;
 
-use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
-
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
 class ArrayRenderContext implements ContextInterface
 {
-    protected $mergeType = 'field';
     /**
      * @var ContextInterface
      */
@@ -28,18 +24,6 @@ class ArrayRenderContext implements ContextInterface
     }
 
     /**
-     * @param $type
-     *
-     * @return $this
-     */
-    public function merge($type)
-    {
-        $this->mergeType = $type;
-
-        return $this;
-    }
-
-    /**
      * @param $value
      *
      * @return array
@@ -47,13 +31,5 @@ class ArrayRenderContext implements ContextInterface
     public function run($value)
     {
         return $this->context->run($value);
-    }
-
-    /**
-     * @return MergeStrategyInterface
-     */
-    protected function createMerge()
-    {
-        return new FieldMergeStrategy();
     }
 }

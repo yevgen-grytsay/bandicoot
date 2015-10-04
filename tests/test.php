@@ -24,16 +24,22 @@ $b = new \YevgenGrytsay\Bandicoot\Builder();
 //    ))->merge('array')
 //));
 
+$merge = new \YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy();
+$listMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy();
+
 $render = $b->render(array(
-    'root' => $b->iterate($dataSource)->render(array(
+    'root' => $b->each($dataSource, $b->render(array(
         'product' => $b->render(array(
             'prodname' => $b->value('name'),
             'mticode' => $b->value('jde'),
-            'picture' => $b->_list($b->unwindArray('img')->render($b->self())),
-            'picture2' => $b->_list($b->unwindArray('img')->render($b->self()))
-        ))
-    ))
-));
+            'picture' => $b->_list($b->unwindArray('img')->renderArray($b->self())),
+//            'picture' => $b->unwindArray('img')->renderArray($b->self()),
+
+            //'picture2' => 'list(unwindArray(img)|renderArray(:self))'
+            //'picture2' => $b->_list($b->unwindArray('img')->render($b->self()))
+        ))->merge($merge, $listMerge)
+    ))->merge($merge, $listMerge))
+))->merge($merge, $listMerge);
 
 
 //$render = $b->iterate($dataSource)->render(array(
