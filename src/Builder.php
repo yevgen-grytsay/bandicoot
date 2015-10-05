@@ -2,6 +2,7 @@
 
 namespace YevgenGrytsay\Bandicoot;
 use YevgenGrytsay\Bandicoot\Context\ContextInterface;
+use YevgenGrytsay\Bandicoot\Context\ContextResolverInterface;
 use YevgenGrytsay\Bandicoot\Context\IteratorContext;
 use YevgenGrytsay\Bandicoot\Context\ListContextInterface;
 use YevgenGrytsay\Bandicoot\Context\RenderContext;
@@ -32,13 +33,15 @@ class Builder
     }
 
     /**
-     * @param array $config
+     * @param array                                                     $config
      *
-     * @return RenderContext
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextResolverInterface $resolver
+     *
+     * @return \YevgenGrytsay\Bandicoot\Context\RenderContext
      */
-    public function render(array $config)
+    public function render(array $config, ContextResolverInterface $resolver = null)
     {
-        $context = new RenderContext($config, $this->factory);
+        $context = new RenderContext($config, $this->factory, $resolver);
 
         return $context;
     }

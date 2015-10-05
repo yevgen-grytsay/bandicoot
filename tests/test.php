@@ -58,7 +58,8 @@ class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess\P
 }
 
 $merge = new \YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy();
-$listMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy();
+$nestedMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy();
+$listMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy($nestedMerge);
 $factory = new \YevgenGrytsay\Bandicoot\Factory(new DefaultPropertyAccess(), $merge, $listMerge);
 
 $b = new \YevgenGrytsay\Bandicoot\Builder($factory);
@@ -79,6 +80,7 @@ $pushMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\ArrayPushMergeStrategy()
 $render = $b->render(array(
     'root' => $b->each($dataSource, $b->render(array(
         'product' => $b->render(array(
+            'jde',
             'prodname' => $b->value('name'),
             'mticode' => $b->value('jde'),
             'picture' => $b->_list($b->unwindArray('img')->renderArray($b->self()))->merge($pushMerge),

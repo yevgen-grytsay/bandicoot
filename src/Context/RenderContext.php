@@ -26,17 +26,23 @@ class RenderContext implements ContextInterface
      * @var \YevgenGrytsay\Bandicoot\Factory
      */
     private $factory;
+    /**
+     * @var ContextResolverInterface
+     */
+    protected $resolver;
 
     /**
      * RenderContext constructor.
      *
-     * @param array                            $config
-     * @param \YevgenGrytsay\Bandicoot\Factory $factory
+     * @param array                                            $config
+     * @param \YevgenGrytsay\Bandicoot\Factory                 $factory
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextResolverInterface $resolver
      */
-    public function __construct(array $config, Factory $factory)
+    public function __construct(array $config, Factory $factory, ContextResolverInterface $resolver = null)
     {
         $this->config = $config;
         $this->factory = $factory;
+        $this->resolver = $resolver;
     }
 
     /**
@@ -57,6 +63,7 @@ class RenderContext implements ContextInterface
      * @param $value
      *
      * @return array
+     * @throws \RuntimeException
      */
     public function run($value)
     {
@@ -68,12 +75,42 @@ class RenderContext implements ContextInterface
          * @var ContextInterface $context
          */
         foreach ($this->config as $field => $context) {
+            list($field, $context) = $this->resolveContext($field, $context);
             $res = $context->run($value);
             if ($context instanceof ListContextInterface) {
                 $listMerge->merge($result, $res, $field);
             } else {
                 $merge->merge($result, $res, $field);
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $field
+     * @param $context
+     *
+     * @return array
+     * @throws \RuntimeException
+     */
+    protected function resolveContext($field, $context)
+    {
+        $result = null;
+        if ($context instanceof ContextInterface) {
+            $result = array($field, $context);
+        }
+        else if ($this->resolver) {
+            $result = $this->resolver->getContext($context);
+        }
+        else if (is_string($field) && is_string($context)) {
+            $result = array($field, new ValueContext($context, $this->factory->getPropertyAccessEngine()));
+        }
+        else if (is_numeric($field) && is_string($context)) {
+            $result = array($context, new ValueContext($context, $this->factory->getPropertyAccessEngine()));
+        }
+        else {
+            throw new \RuntimeException('Can not determine context');
         }
 
         return $result;
