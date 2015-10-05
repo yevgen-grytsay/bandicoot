@@ -12,7 +12,8 @@ interface ContextResolverInterface
     /**
      * @param string $name
      *
-     * @return mixed
+     * @return ContextInterface
+     * @throws \RuntimeException
      */
     public function getContext($name);
 }
