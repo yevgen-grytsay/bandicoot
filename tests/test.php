@@ -83,7 +83,7 @@ $render = $b->render(array(
             'jde',
             'prodname' => $b->value('name'),
             'mticode' => $b->value('jde'),
-            'picture' => $b->_list($b->unwindArray('img')->renderArray($b->self()))->merge($pushMerge),
+            'picture' => $b->_list($b->unwindArray('img')->each())->merge($pushMerge),
 //            'picture2' => $b->_list()
 //            'picture' => $b->unwindArray('img')->renderArray($b->self()),
 

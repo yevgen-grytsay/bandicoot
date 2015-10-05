@@ -77,7 +77,7 @@ class RenderContext implements ContextInterface
         foreach ($this->config as $field => $context) {
             list($field, $context) = $this->resolveContext($field, $context);
             $res = $context->run($value);
-            if ($context instanceof ListContextInterface) {
+            if ($context instanceof ListContext) {
                 $listMerge->merge($result, $res, $field);
             } else {
                 $merge->merge($result, $res, $field);

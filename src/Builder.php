@@ -4,7 +4,7 @@ namespace YevgenGrytsay\Bandicoot;
 use YevgenGrytsay\Bandicoot\Context\ContextInterface;
 use YevgenGrytsay\Bandicoot\Context\ContextResolverInterface;
 use YevgenGrytsay\Bandicoot\Context\IteratorContext;
-use YevgenGrytsay\Bandicoot\Context\ListContextInterface;
+use YevgenGrytsay\Bandicoot\Context\ListContext;
 use YevgenGrytsay\Bandicoot\Context\RenderContext;
 use YevgenGrytsay\Bandicoot\Context\UnwindArrayContext;
 use YevgenGrytsay\Bandicoot\Context\UnwindContext;
@@ -108,11 +108,11 @@ class Builder
     /**
      * @param ContextInterface $context
      *
-     * @return ListContextInterface
+     * @return ListContext
      */
     public function _list(ContextInterface $context)
     {
-        $context = new ListContextInterface($context);
+        $context = new ListContext($context);
 
         return $context;
     }

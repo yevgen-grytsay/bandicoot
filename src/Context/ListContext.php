@@ -8,12 +8,12 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-class ListContextInterface implements ContextInterface
+class ListContext implements ContextInterface
 {
     /**
      * @var MergeStrategyInterface
      */
-    protected $merge;
+    protected $mergeStrategy;
     /**
      * @var ContextInterface
      */
@@ -38,7 +38,7 @@ class ListContextInterface implements ContextInterface
     {
         $result = array();
         foreach ($this->dataSource->run($value) as $key => $item) {
-            $this->merge->merge($result, $item, $key);
+            $this->mergeStrategy->merge($result, $item, $key);
         }
 
         return $result;
@@ -51,7 +51,7 @@ class ListContextInterface implements ContextInterface
      */
     public function merge(MergeStrategyInterface $merge)
     {
-        $this->merge = $merge;
+        $this->mergeStrategy = $merge;
 
         return $this;
     }

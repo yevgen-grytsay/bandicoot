@@ -14,14 +14,6 @@ class UnwindArrayContext implements ContextInterface
     /**
      * @var string
      */
-    protected $mergeType = 'field';
-    /**
-     * @var string
-     */
-    protected $mergeKey;
-    /**
-     * @var string
-     */
     protected $accessor;
     /**
      * @var ContextInterface
@@ -57,8 +49,9 @@ class UnwindArrayContext implements ContextInterface
          */
         $result = array();
         $merge = $this->createMerge();
+        $context = $this->getContext();
         foreach ($this->_iterator($value) as $key => $value) {
-            $ret = $this->context->run($value);
+            $ret = $context->run($value);
             $merge->merge($result, $ret, $key);
         }
 
@@ -78,39 +71,32 @@ class UnwindArrayContext implements ContextInterface
     }
 
     /**
-     * @param ContextInterface $render
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface $context
      *
      * @return $this
      */
-    public function renderArray(ContextInterface $render)
+    public function each(ContextInterface $context = null)
     {
-        $this->context = new ArrayRenderContext($render);
+        $this->context = $context ?: $this->createDefaultContext();
 
         return $this;
     }
 
     /**
-     * @param array $config
-     *
-     * @return $this
+     * @return \YevgenGrytsay\Bandicoot\Context\ValueSelfContext
      */
-    public function render($config)
+    protected function getContext()
     {
-        $this->context = new RenderContext($config);
-
-        return $this;
+        //TODO: create object using factory or DI container
+        return $this->context ?: $this->createDefaultContext();
     }
 
     /**
-     * @param $type
-     *
-     * @return $this
+     * @return \YevgenGrytsay\Bandicoot\Context\ContextInterface
      */
-    public function merge($type)
+    protected function createDefaultContext()
     {
-        $this->mergeType = $type;
-
-        return $this;
+        return new ValueSelfContext();
     }
 
     /**
