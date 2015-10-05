@@ -1,9 +1,9 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\ArrayHelper;
 use YevgenGrytsay\Bandicoot\MergeStrategy\ArrayPushMergeStrategy;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
+use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -27,15 +27,21 @@ class UnwindArrayContext implements ContextInterface
      * @var ContextInterface
      */
     protected $context;
+    /**
+     * @var \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface
+     */
+    private $propertyAccess;
 
     /**
      * UnwindArrayContext constructor.
      *
-     * @param string $accessor
+     * @param string                                                          $accessor
+     * @param \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface $propertyAccess
      */
-    public function __construct($accessor)
+    public function __construct($accessor, PropertyAccessInterface $propertyAccess)
     {
         $this->accessor = $accessor;
+        $this->propertyAccess = $propertyAccess;
     }
 
     /**
@@ -66,7 +72,7 @@ class UnwindArrayContext implements ContextInterface
      */
     protected function _iterator($value)
     {
-        $data = ArrayHelper::getValue($value, $this->accessor);
+        $data = $this->propertyAccess->getValue($value, $this->accessor);
 
         return new \ArrayIterator($data);
     }

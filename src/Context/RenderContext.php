@@ -1,9 +1,8 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
+use YevgenGrytsay\Bandicoot\Factory;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
-use YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -14,7 +13,7 @@ class RenderContext implements ContextInterface
     /**
      * @var MergeStrategyInterface
      */
-    protected $merge;
+    protected $defaultMerge;
     /**
      * @var MergeStrategyInterface
      */
@@ -23,15 +22,21 @@ class RenderContext implements ContextInterface
      * @var array
      */
     protected $config = array();
+    /**
+     * @var \YevgenGrytsay\Bandicoot\Factory
+     */
+    private $factory;
 
     /**
      * RenderContext constructor.
      *
-     * @param array $config
+     * @param array                            $config
+     * @param \YevgenGrytsay\Bandicoot\Factory $factory
      */
-    public function __construct(array $config)
+    public function __construct(array $config, Factory $factory)
     {
         $this->config = $config;
+        $this->factory = $factory;
     }
 
     /**
@@ -40,9 +45,9 @@ class RenderContext implements ContextInterface
      *
      * @return $this
      */
-    public function merge(MergeStrategyInterface $merge, MergeStrategyInterface $listMerge)
+    public function merge(MergeStrategyInterface $merge = null, MergeStrategyInterface $listMerge = null)
     {
-        $this->merge = $merge;
+        $this->defaultMerge = $merge;
         $this->listMerge = $listMerge;
 
         return $this;
@@ -56,6 +61,8 @@ class RenderContext implements ContextInterface
     public function run($value)
     {
         $result = array();
+        $merge = $this->getDefaultMerge();
+        $listMerge = $this->getListMerge();
         /**
          * @var string|int $field
          * @var ContextInterface $context
@@ -63,12 +70,38 @@ class RenderContext implements ContextInterface
         foreach ($this->config as $field => $context) {
             $res = $context->run($value);
             if ($context instanceof ListContextInterface) {
-                $this->listMerge->merge($result, $res, $field);
+                $listMerge->merge($result, $res, $field);
             } else {
-                $this->merge->merge($result, $res, $field);
+                $merge->merge($result, $res, $field);
             }
         }
 
         return $result;
+    }
+
+    /**
+     * @return \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface
+     */
+    protected function getDefaultMerge()
+    {
+        $merge = $this->defaultMerge;
+        if (!$merge) {
+            $merge = $this->factory->getMerge();
+        }
+
+        return $merge;
+    }
+
+    /**
+     * @return \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface
+     */
+    protected function getListMerge()
+    {
+        $merge = $this->listMerge;
+        if (!$merge) {
+            $merge = $this->factory->getListMerge();
+        }
+
+        return $merge;
     }
 }

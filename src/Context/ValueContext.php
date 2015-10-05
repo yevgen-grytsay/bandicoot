@@ -1,7 +1,7 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\ArrayHelper;
+use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -13,15 +13,21 @@ class ValueContext implements ContextInterface
      * @var string
      */
     protected $accessor;
+    /**
+     * @var PropertyAccessInterface
+     */
+    private $propertyAccess;
 
     /**
      * ValueContext constructor.
      *
-     * @param string $accessor
+     * @param string                                                          $accessor
+     * @param \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface $propertyAccess
      */
-    public function __construct($accessor)
+    public function __construct($accessor, PropertyAccessInterface $propertyAccess)
     {
         $this->accessor = $accessor;
+        $this->propertyAccess = $propertyAccess;
     }
 
     /**
@@ -31,6 +37,6 @@ class ValueContext implements ContextInterface
      */
     public function run($value)
     {
-        return ArrayHelper::getValue($value, $this->accessor);
+        return $this->propertyAccess->getValue($value, $this->accessor);
     }
 }

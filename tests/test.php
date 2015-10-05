@@ -12,7 +12,56 @@ $dataSource = new ArrayIterator(array(
     array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'))
 ));
 
-$b = new \YevgenGrytsay\Bandicoot\Builder();
+class ArrayHelper
+{
+    public static function getValue($array, $key, $default = null)
+    {
+        if ($key instanceof \Closure) {
+            return $key($array, $default);
+        }
+        if (is_array($key)) {
+            $lastKey = array_pop($key);
+            foreach ($key as $keyPart) {
+                $array = static::getValue($array, $keyPart);
+            }
+            $key = $lastKey;
+        }
+        if (is_array($array) && array_key_exists($key, $array)) {
+            return $array[$key];
+        }
+        if (($pos = strrpos($key, '.')) !== false) {
+            $array = static::getValue($array, substr($key, 0, $pos), $default);
+            $key = substr($key, $pos + 1);
+        }
+        if (is_object($array)) {
+            return $array->$key;
+        } elseif (is_array($array)) {
+            return array_key_exists($key, $array) ? $array[$key] : $default;
+        } else {
+            return $default;
+        }
+    }
+}
+
+class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface
+{
+    /**
+     * @param $objectOrArray
+     * @param $propertyPath
+     *
+     * @return mixed
+     */
+    public function getValue($objectOrArray, $propertyPath)
+    {
+        return ArrayHelper::getValue($objectOrArray, $propertyPath);
+    }
+}
+
+$merge = new \YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy();
+$listMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy();
+$factory = new \YevgenGrytsay\Bandicoot\Factory(new DefaultPropertyAccess(), $merge, $listMerge);
+
+$b = new \YevgenGrytsay\Bandicoot\Builder($factory);
 //$render = $b->render(array(
 //    'root' => $b->render(array(
 //        'product' => $b->iterate($dataSource)->render(array(
@@ -24,8 +73,7 @@ $b = new \YevgenGrytsay\Bandicoot\Builder();
 //    ))->merge('array')
 //));
 
-$merge = new \YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy();
-$listMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy();
+
 $pushMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\ArrayPushMergeStrategy();
 
 $render = $b->render(array(
@@ -39,9 +87,9 @@ $render = $b->render(array(
 
             //'picture2' => 'list(unwindArray(img)|renderArray(:self))'
             //'picture2' => $b->_list($b->unwindArray('img')->render($b->self()))
-        ))->merge($merge, $listMerge)
-    ))->merge($merge, $listMerge))
-))->merge($merge, $listMerge);
+        ))
+    )))
+));
 
 
 //$render = $b->iterate($dataSource)->render(array(

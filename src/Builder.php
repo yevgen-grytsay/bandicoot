@@ -6,7 +6,6 @@ use YevgenGrytsay\Bandicoot\Context\IteratorContext;
 use YevgenGrytsay\Bandicoot\Context\ListContextInterface;
 use YevgenGrytsay\Bandicoot\Context\RenderContext;
 use YevgenGrytsay\Bandicoot\Context\UnwindArrayContext;
-use YevgenGrytsay\Bandicoot\Context\UnwindArrayDelegatingContext;
 use YevgenGrytsay\Bandicoot\Context\UnwindContext;
 use YevgenGrytsay\Bandicoot\Context\ValueContext;
 use YevgenGrytsay\Bandicoot\Context\ValueSelfContext;
@@ -18,13 +17,28 @@ use YevgenGrytsay\Bandicoot\Context\ValueSelfContext;
 class Builder
 {
     /**
+     * @var Factory
+     */
+    protected $factory;
+
+    /**
+     * Builder constructor.
+     *
+     * @param \YevgenGrytsay\Bandicoot\Factory $factory
+     */
+    public function __construct(Factory $factory)
+    {
+        $this->factory = $factory;
+    }
+
+    /**
      * @param array $config
      *
      * @return RenderContext
      */
     public function render(array $config)
     {
-        $context = new RenderContext($config);
+        $context = new RenderContext($config, $this->factory);
 
         return $context;
     }
@@ -49,7 +63,7 @@ class Builder
      */
     public function value($name)
     {
-        $context = new ValueContext($name);
+        $context = new ValueContext($name, $this->factory->getPropertyAccessEngine());
 
         return $context;
     }
@@ -73,19 +87,7 @@ class Builder
      */
     public function unwindArray($accessor)
     {
-        $context = new UnwindArrayContext($accessor);
-
-        return $context;
-    }
-
-    /**
-     * @param ContextInterface $context
-     *
-     * @return ContextInterface
-     */
-    public function unwindBy(ContextInterface $context)
-    {
-        $context = new UnwindArrayDelegatingContext($context);
+        $context = new UnwindArrayContext($accessor, $this->factory->getPropertyAccessEngine());
 
         return $context;
     }
