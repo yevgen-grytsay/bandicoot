@@ -26,23 +26,20 @@ class RenderContext implements ContextInterface
      * @var \YevgenGrytsay\Bandicoot\Factory
      */
     private $factory;
-    /**
-     * @var ContextResolverInterface
-     */
-    protected $resolver;
 
     /**
-     * RenderContext constructor.
+     * Each item in config can be defined in one of the following ways:
+     * 1) ["name" => "accessor"]:       ["name" => ValueContext("accessor")]
+     * 3) ["name" => ContextInterface]: ["name" => ValueContext("accessor")]
+     * 2) ["accessor"]:                 ["accessor" => ValueContext("accessor")]
      *
-     * @param array                                            $config
-     * @param \YevgenGrytsay\Bandicoot\Factory                 $factory
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextResolverInterface $resolver
+     * @param array                            $config
+     * @param \YevgenGrytsay\Bandicoot\Factory $factory
      */
-    public function __construct(array $config, Factory $factory, ContextResolverInterface $resolver = null)
+    public function __construct(array $config, Factory $factory)
     {
         $this->config = $config;
         $this->factory = $factory;
-        $this->resolver = $resolver;
     }
 
     /**
@@ -99,9 +96,6 @@ class RenderContext implements ContextInterface
         $result = null;
         if ($context instanceof ContextInterface) {
             $result = array($field, $context);
-        }
-        else if ($this->resolver) {
-            $result = $this->resolver->getContext($context);
         }
         else if (is_string($field) && is_string($context)) {
             $result = array($field, new ValueContext($context, $this->factory->getPropertyAccessEngine()));
