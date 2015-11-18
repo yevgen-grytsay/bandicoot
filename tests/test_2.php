@@ -5,6 +5,12 @@
  * Date: 10/3/15
  * Time: 2:13 AM
  */
+use YevgenGrytsay\Bandicoot\Builder;
+use YevgenGrytsay\Bandicoot\Factory;
+use YevgenGrytsay\Bandicoot\MergeStrategy\FieldArrayMergeStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 $dataSource = new ArrayIterator(array(
@@ -12,23 +18,103 @@ $dataSource = new ArrayIterator(array(
     array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'))
 ));
 
-function array_to_xml($array, SimpleXMLElement $xmlDoc) {
-    foreach($array as $key => $value) {
-        if(is_array($value)) {
-            $keys = array_keys($value);
-            if (is_numeric($keys[0])) {
-                foreach ($value as $item) {
-                    array_to_xml(array($key => $item), $xmlDoc);
+class ArrayToXml
+{
+    const TYPE_NUMERIC = 'numeric';
+    const TYPE_STRING = 'string';
+
+    /**
+     * @param                   $array
+     * @param \SimpleXMLElement $el
+     * @throws \RuntimeException
+     */
+    public function convert($array, SimpleXMLElement $el)
+    {
+        foreach($array as $key => $value) {
+            if(is_array($value)) {
+                if (count($value) === 0) {
+                    continue;
+                }
+                if ($this->isNumeric($value)) {
+                    foreach ($value as $item) {
+                        $this->convert(array($key => $item), $el);
+                    }
+                } else {
+                    $child = $el->addChild("$key");
+                    $this->convert($value, $child);
                 }
             } else {
-                $subnode = $xmlDoc->addChild("$key");
-                array_to_xml($value, $subnode);
+                $el->addChild("$key", htmlspecialchars("$value"));
             }
-        } else {
-            $xmlDoc->addChild("$key", htmlspecialchars("$value"));
         }
     }
+
+    /**
+     * @param array $arr
+     *
+     * @return bool
+     * @throws \RuntimeException
+     */
+    private function isNumeric(array $arr)
+    {
+        $type = $this->checkKeysType($arr);
+
+        return $type === self::TYPE_NUMERIC;
+    }
+
+    /**
+     * @param array $arr
+     *
+     * @return string
+     * @throws \RuntimeException
+     */
+    private function checkKeysType(array $arr)
+    {
+        if (count($arr) === 0) {
+            throw new \RuntimeException('Can\'t determine keys type of an empty array.');
+        }
+
+        $numeric = 0;
+        $string = 0;
+        foreach ($arr as $key => $item) {
+            if (is_int($key)) {
+                ++$numeric;
+            } else {
+                ++$string;
+            }
+            if ($numeric > 0 && $string > 0) {
+                throw new \RuntimeException(
+                    printf('Array should contain keys of only one type (string, integer). Given array
+                    contains keys of both types: "%s"', print_r($arr, true)));
+            }
+        }
+
+        $result = self::TYPE_STRING;
+        if ($numeric > 0) {
+            $result = self::TYPE_NUMERIC;
+        }
+
+        return $result;
+    }
 }
+
+//function array_to_xml($array, SimpleXMLElement $xmlDoc) {
+//    foreach($array as $key => $value) {
+//        if(is_array($value)) {
+//            $keys = array_keys($value);
+//            if (is_numeric($keys[0])) {
+//                foreach ($value as $item) {
+//                    array_to_xml(array($key => $item), $xmlDoc);
+//                }
+//            } else {
+//                $subnode = $xmlDoc->addChild("$key");
+//                array_to_xml($value, $subnode);
+//            }
+//        } else {
+//            $xmlDoc->addChild("$key", htmlspecialchars("$value"));
+//        }
+//    }
+//}
 
 class ArrayHelper
 {
@@ -75,12 +161,11 @@ class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess\P
     }
 }
 
-$merge = new \YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy();
-$nestedMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\FieldArrayMergeStrategy();
-
-$listMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy($nestedMerge);
-$factory = new \YevgenGrytsay\Bandicoot\Factory(new DefaultPropertyAccess(), $merge, $listMerge);
-$b = new \YevgenGrytsay\Bandicoot\Builder($factory);
+$merge = new FieldMergeStrategy();
+$nestedMerge = new FieldArrayMergeStrategy();
+$listMerge = new MergeEachStrategy($nestedMerge);
+$factory = new Factory(new DefaultPropertyAccess(), $merge, $listMerge);
+$b = new Builder($factory);
 
 $render = $b->render([
     'result' => $b->render([
@@ -108,10 +193,16 @@ var_dump($result);
 
 //creating object of SimpleXMLElement
 $xmlDoc = new SimpleXMLElement("<?xml version=\"1.0\"?><root></root>");
-
+$converter = new ArrayToXml();
 //function call to convert array to xml
-array_to_xml($result, $xmlDoc);
+//array_to_xml($result, $xmlDoc);
+
+$converter->convert($result, $xmlDoc);
 
 //saving generated xml file
 $xml_file = $xmlDoc->asXML();
-var_dump($xml_file);
+$dom = new DOMDocument("1.0");
+$dom->preserveWhiteSpace = false;
+$dom->formatOutput = true;
+$dom->loadXML($xml_file);
+echo $dom->saveXML();

@@ -5,6 +5,12 @@
  * Date: 10/3/15
  * Time: 2:13 AM
  */
+use YevgenGrytsay\Bandicoot\Builder;
+use YevgenGrytsay\Bandicoot\Factory;
+use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 $dataSource = new ArrayIterator(array(
@@ -110,12 +116,11 @@ class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess\P
     }
 }
 
-$merge = new \YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy();
-$nestedMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy();
-
-$listMerge = new \YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy($nestedMerge);
-$factory = new \YevgenGrytsay\Bandicoot\Factory(new DefaultPropertyAccess(), $merge, $listMerge);
-$b = new \YevgenGrytsay\Bandicoot\Builder($factory);
+$merge = new FieldMergeStrategy();
+$nestedMerge = new NestedArrayMergeStrategy();
+$listMerge = new MergeEachStrategy($nestedMerge);
+$factory = new Factory(new DefaultPropertyAccess(), $merge, $listMerge);
+$b = new Builder($factory);
 
 $render = $b->render([
     'result' => $b->render([
