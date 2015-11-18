@@ -12,18 +12,20 @@ $dataSource = new ArrayIterator(array(
     array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'))
 ));
 
-function array_to_xml($array, &$xml_user_info) {
+function array_to_xml($array, SimpleXMLElement $xmlDoc) {
     foreach($array as $key => $value) {
         if(is_array($value)) {
-            if(!is_numeric($key)){
-                $subnode = $xml_user_info->addChild("$key");
-                array_to_xml($value, $subnode);
-            }else{
-                $subnode = $xml_user_info->addChild("item$key");
+            $keys = array_keys($value);
+            if (is_numeric($keys[0])) {
+                foreach ($value as $item) {
+                    array_to_xml(array($key => $item), $xmlDoc);
+                }
+            } else {
+                $subnode = $xmlDoc->addChild("$key");
                 array_to_xml($value, $subnode);
             }
-        }else {
-            $xml_user_info->addChild("$key",htmlspecialchars("$value"));
+        } else {
+            $xmlDoc->addChild("$key", htmlspecialchars("$value"));
         }
     }
 }
