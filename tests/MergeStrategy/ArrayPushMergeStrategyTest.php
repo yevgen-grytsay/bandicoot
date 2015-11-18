@@ -14,7 +14,7 @@ class ArrayPushMergeStrategyTest extends \PHPUnit_Framework_TestCase
     {
         $merge = new ArrayPushMergeStrategy();
         $result = [];
-        $value = 'sample value';
+        $value = ['sample value'];
 
         $merge->merge($result, $value, null);
 
@@ -26,7 +26,7 @@ class ArrayPushMergeStrategyTest extends \PHPUnit_Framework_TestCase
         $merge = new ArrayPushMergeStrategy();
         $valueInArray = 'already in array';
         $result = [$valueInArray];
-        $value = 'sample value';
+        $value = ['sample value'];
 
         $merge->merge($result, $value, null);
 

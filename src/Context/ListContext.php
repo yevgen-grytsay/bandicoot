@@ -2,6 +2,7 @@
 
 namespace YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\MergeStrategy\ArrayPushMergeStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 
 /**
@@ -11,22 +12,24 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 class ListContext implements ContextInterface
 {
     /**
-     * @var MergeStrategyInterface
-     */
-    protected $mergeStrategy;
-    /**
      * @var ContextInterface
      */
     protected $dataSource;
+    /**
+     * @var \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface
+     */
+    private $merge;
 
     /**
-     * ListContextInterface constructor.
+     * ListContext constructor.
      *
-     * @param ContextInterface $dataSource
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface                 $dataSource
+     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface $merge
      */
-    public function __construct(ContextInterface $dataSource)
+    public function __construct(ContextInterface $dataSource, MergeStrategyInterface $merge)
     {
         $this->dataSource = $dataSource;
+        $this->merge = $merge;
     }
 
     /**
@@ -38,21 +41,9 @@ class ListContext implements ContextInterface
     {
         $result = array();
         foreach ($this->dataSource->run($value) as $key => $item) {
-            $this->mergeStrategy->merge($result, $item, $key);
+            $this->merge->merge($result, $item, $key);
         }
 
         return $result;
-    }
-
-    /**
-     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface $merge
-     *
-     * @return $this
-     */
-    public function merge(MergeStrategyInterface $merge)
-    {
-        $this->mergeStrategy = $merge;
-
-        return $this;
     }
 }

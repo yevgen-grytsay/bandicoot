@@ -7,6 +7,7 @@
 namespace YevgenGrytsay\Bandicoot;
 
 
+use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
 
@@ -21,7 +22,7 @@ class Factory
      */
     protected $merge;
     /**
-     * @var MergeStrategyInterface
+     * @var ListMergeStrategyInterface
      */
     protected $listMerge;
 
@@ -30,9 +31,9 @@ class Factory
      *
      * @param \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface $propertyAccess
      * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface   $merge
-     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface   $listMerge
+     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface   $listMerge
      */
-    public function __construct(PropertyAccessInterface $propertyAccess, MergeStrategyInterface $merge, MergeStrategyInterface $listMerge)
+    public function __construct(PropertyAccessInterface $propertyAccess, MergeStrategyInterface $merge, ListMergeStrategyInterface $listMerge)
     {
         $this->propertyAccess = $propertyAccess;
         $this->merge = $merge;
@@ -56,7 +57,7 @@ class Factory
     }
 
     /**
-     * @return \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface
+     * @return \YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface
      */
     public function getListMerge()
     {

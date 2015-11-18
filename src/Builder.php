@@ -47,14 +47,15 @@ class Builder
     }
 
     /**
-     * @param \Iterator                                         $data
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface $context
+     * @param \Iterator $data
+     * @param array     $renderConfig
      *
      * @return \YevgenGrytsay\Bandicoot\Context\IteratorContext
      */
-    public function each(\Iterator $data, ContextInterface $context)
+    public function each(\Iterator $data, array $renderConfig)
     {
-        $context = new IteratorContext($data, $context);
+        $render = $this->render($renderConfig);
+        $context = new IteratorContext($data, $render, $this->factory->getMerge());
 
         return $context;
     }
@@ -84,13 +85,18 @@ class Builder
     }
 
     /**
-     * @param $accessor
+     * @param                                                        $accessor
+     * @param array                                                  $renderConfig
      *
-     * @return UnwindArrayContext
+     * @return \YevgenGrytsay\Bandicoot\Context\UnwindArrayContext
      */
-    public function unwindArray($accessor)
+    public function unwindArray($accessor, array $renderConfig = null)
     {
-        $context = new UnwindArrayContext($accessor, $this->factory->getPropertyAccessEngine());
+        $render = null;
+        if ($renderConfig) {
+            $render = $this->render($renderConfig);
+        }
+        $context = new UnwindArrayContext($accessor, $this->factory->getPropertyAccessEngine(), $this->factory->getMerge(), $render);
 
         return $context;
     }
@@ -112,7 +118,7 @@ class Builder
      */
     public function _list(ContextInterface $context)
     {
-        $context = new ListContext($context);
+        $context = new ListContext($context, $this->factory->getMerge());
 
         return $context;
     }

@@ -7,14 +7,12 @@
 namespace YevgenGrytsay\Bandicoot\MergeStrategy;
 
 /**
- * If $value passed to "merge" method is an array,
- * then the strategy applies specified merge strategy to each item of the array.
- * Otherwise it applies specified merge strategy once for $value.
+ * Applies specified merge strategy to each item of the array.
  *
  * Class MergeEachStrategy
  * @package YevgenGrytsay\Bandicoot\MergeStrategy
  */
-class MergeEachStrategy implements MergeStrategyInterface
+class MergeEachStrategy implements ListMergeStrategyInterface
 {
     /**
      * @var MergeStrategyInterface
@@ -32,21 +30,14 @@ class MergeEachStrategy implements MergeStrategyInterface
     }
 
     /**
-     * @param $result
-     * @param $value
-     * @param $key
-     *
-     * @return mixed
+     * @param       $result
+     * @param array $value
+     * @param       $key
      */
-    public function merge(&$result, $value, $key)
+    public function merge(&$result, array $value, $key)
     {
-        if (is_array($value)) {
-            foreach ($value as $item) {
-                $this->itemMerge->merge($result, $item, $key);
-            }
-        }
-        else {
-            $this->itemMerge->merge($result, $value, $key);
+        foreach ($value as $item) {
+            $this->itemMerge->merge($result, $item, $key);
         }
     }
 }

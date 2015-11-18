@@ -12,8 +12,6 @@ class ArrayPushMergeStrategy implements MergeStrategyInterface
      * @param $result
      * @param $value
      * @param $key
-     *
-     * @return mixed
      */
     public function merge(&$result, $value, $key)
     {

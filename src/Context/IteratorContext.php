@@ -1,7 +1,7 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 
 /**
@@ -19,20 +19,22 @@ class IteratorContext implements ContextInterface
      */
     protected $context;
     /**
-     * @var string
+     * @var \YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface
      */
-    protected $mergeType = 'field';
+    private $merge;
 
     /**
      * IteratorContext constructor.
      *
-     * @param \Iterator                                         $iterator
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface $context
+     * @param \Iterator                                                         $iterator
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface                 $context
+     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface $merge
      */
-    public function __construct(\Iterator $iterator, ContextInterface $context)
+    public function __construct(\Iterator $iterator, ContextInterface $context, MergeStrategyInterface $merge)
     {
         $this->iterator = $iterator;
         $this->context = $context;
+        $this->merge = $merge;
     }
 
     /**
@@ -43,32 +45,12 @@ class IteratorContext implements ContextInterface
     public function run($value)
     {
         $return = array();
-        $merge = $this->createMerge();
+        $merge = $this->merge;
         foreach ($this->iterator as $key => $item) {
             $result = $this->context->run($item);
             $merge->merge($return, $result, $key);
         }
 
         return $return;
-}
-
-    /**
-     * @param $type
-     *
-     * @return $this
-     */
-    public function merge($type)
-    {
-        $this->mergeType = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return MergeStrategyInterface
-     */
-    protected function createMerge()
-    {
-        return new FieldMergeStrategy();
     }
 }
