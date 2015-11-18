@@ -58,9 +58,12 @@ class UnwindArrayContext implements ContextInterface
          */
         $result = array();
         $context = $this->getContext();
-        foreach ($this->_iterator($value) as $key => $value) {
+        $i = 0;
+        foreach ($this->_iterator($value) as $value) {
             $ret = $context->run($value);
+//            $this->merge->merge($result, $ret, $i);
             $result[] = $ret;
+            ++$i;
         }
 
         return $result;
