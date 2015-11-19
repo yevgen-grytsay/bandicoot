@@ -11,7 +11,7 @@ class FieldMergeStrategy implements MergeStrategyInterface
     /**
      * @var bool
      */
-    protected $throwExceptionOnDuplicateKey = false;
+    protected $throwExceptionOnDuplicateKey = true;
 
     /**
      * @param $result

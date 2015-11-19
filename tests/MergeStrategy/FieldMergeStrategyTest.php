@@ -25,6 +25,7 @@ class FieldMergeStrategyTest extends \PHPUnit_Framework_TestCase
     public function testAddValueShouldOverrideValueWithSameKey()
     {
         $merge = new FieldMergeStrategy();
+        $merge->setThrowExceptionOnDuplicateKey(false);
         $value = 'sample value';
         $key = 'key';
         $result = [$key => 'already in array'];
@@ -34,10 +35,9 @@ class FieldMergeStrategyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([$key => $value], $result);
     }
 
-    public function testShouldThrowExceptionOnDuplicateKeyAndThrowOptionIsSet()
+    public function testShouldThrowExceptionOnDuplicateKey()
     {
         $merge = new FieldMergeStrategy();
-        $merge->setThrowExceptionOnDuplicateKey(true);
         $value = 'sample value';
         $key = 'key';
         $result = [$key => 'already in array'];
