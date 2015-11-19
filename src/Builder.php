@@ -10,6 +10,7 @@ use YevgenGrytsay\Bandicoot\Context\UnwindArrayContext;
 use YevgenGrytsay\Bandicoot\Context\UnwindContext;
 use YevgenGrytsay\Bandicoot\Context\ValueContext;
 use YevgenGrytsay\Bandicoot\Context\ValueSelfContext;
+use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -67,7 +68,7 @@ class Builder
      */
     public function value($name)
     {
-        $context = new ValueContext($name, $this->factory->getPropertyAccessEngine());
+        $context = new ValueContext($name, $this->getPropertyAccessEngine());
 
         return $context;
     }
@@ -96,7 +97,8 @@ class Builder
         if ($renderConfig) {
             $render = $this->render($renderConfig);
         }
-        $context = new UnwindArrayContext($accessor, $this->factory->getPropertyAccessEngine(), $this->factory->getMerge(), $render);
+        $accessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $accessor);
+        $context = new UnwindArrayContext($accessor, $this->factory->getMerge(), $render);
 
         return $context;
     }
@@ -121,5 +123,13 @@ class Builder
         $context = new ListContext($context, $this->factory->getMerge());
 
         return $context;
+    }
+
+    /**
+     * @return \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface
+     */
+    private function getPropertyAccessEngine()
+    {
+        return $this->factory->getPropertyAccessEngine();
     }
 }

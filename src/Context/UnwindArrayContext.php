@@ -1,10 +1,8 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\MergeStrategy\ArrayPushMergeStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
-use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
+use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -13,17 +11,13 @@ use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
 class UnwindArrayContext implements ContextInterface
 {
     /**
-     * @var string
+     * @var ConstantPropertyAccess
      */
     protected $accessor;
     /**
      * @var ContextInterface
      */
     protected $context;
-    /**
-     * @var \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface
-     */
-    private $propertyAccess;
     /**
      * @var \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface
      */
@@ -32,15 +26,13 @@ class UnwindArrayContext implements ContextInterface
     /**
      * UnwindArrayContext constructor.
      *
-     * @param                                                                   $accessor
-     * @param \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface   $propertyAccess
-     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface $merge
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface|null            $context
+     * @param \YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess $accessor
+     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface  $merge
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface|null         $context
      */
-    public function __construct($accessor, PropertyAccessInterface $propertyAccess, MergeStrategyInterface $merge, ContextInterface $context = null)
+    public function __construct(ConstantPropertyAccess $accessor, MergeStrategyInterface $merge, ContextInterface $context = null)
     {
         $this->accessor = $accessor;
-        $this->propertyAccess = $propertyAccess;
         $this->merge = $merge;
         $this->context = $context;
     }
@@ -76,7 +68,7 @@ class UnwindArrayContext implements ContextInterface
      */
     protected function _iterator($value)
     {
-        $data = $this->propertyAccess->getValue($value, $this->accessor);
+        $data = $this->accessor->getValue($value);
 
         return new \ArrayIterator($data);
     }
