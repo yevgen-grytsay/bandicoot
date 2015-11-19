@@ -23,5 +23,8 @@
     "psr-4": {
       "YevgenGrytsay\\Bandicoot\\": "src/"
     }
-  }
+  },
+  "non-feature-branches": [
+    "exp-refactor"
+  ]
 }
