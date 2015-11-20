@@ -1,7 +1,6 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 
 /**

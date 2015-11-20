@@ -14,7 +14,7 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy;
 require_once __DIR__.'/../vendor/autoload.php';
 
 $dataSource = new ArrayIterator(array(
-    array('jde' => 123456, 'name' => 'Lenovo P780', 'img' => array('http://image1.jpg', 'http://rsesg.jpg')),
+    array('jde' => 123456, 'name' => 'Lenovo P780 M&M\'s', 'img' => array('http://image1.jpg', 'http://rsesg.jpg')),
     array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'))
 ));
 
@@ -63,7 +63,9 @@ class A1_Helper_Xml
                     $element = $writer -> createElement($key);
                     $element -> appendChild($writer -> createCDATASection($val));
                 } else {
-                    $element = $writer -> createElement($key,  $val);
+                    $textNode = $writer->createTextNode($val);
+                    $element = $writer -> createElement($key);
+                    $element->appendChild($textNode);
                 }
                 $root -> appendChild($element);
             }
