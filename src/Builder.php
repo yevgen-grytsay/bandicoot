@@ -105,17 +105,18 @@ class Builder
     }
 
     /**
-     * @param $source
-     * @param $keyAccessor
-     * @param $valueAccessor
+     * @param array|\ArrayAccess $source
+     * @param string|ConstantPropertyAccess $keyAccessor
+     * @param string|ConstantPropertyAccess|null $valueAccessor
      * @return FromMapContext
+     * @throws \InvalidArgumentException
      */
-    public function fromMap($source, $keyAccessor, $valueAccessor)
+    public function fromMap($source, $keyAccessor, $valueAccessor = null)
     {
         if (!$keyAccessor instanceof ConstantPropertyAccess) {
             $keyAccessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $keyAccessor);
         }
-        if (!$valueAccessor instanceof ConstantPropertyAccess) {
+        if (!$valueAccessor instanceof ConstantPropertyAccess && $valueAccessor !== null) {
             $valueAccessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $valueAccessor);
         }
         

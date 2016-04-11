@@ -28,10 +28,10 @@ class FromMapContext implements ContextInterface
      * FromMapContext constructor.
      * @param array|\ArrayAccess $source
      * @param ConstantPropertyAccess $keyName
-     * @param ConstantPropertyAccess $valueName
+     * @param ConstantPropertyAccess|null $valueName
      * @throws \InvalidArgumentException
      */
-    public function __construct($source, ConstantPropertyAccess $keyName, ConstantPropertyAccess $valueName)
+    public function __construct($source, ConstantPropertyAccess $keyName, ConstantPropertyAccess $valueName = null)
     {
         if (!is_array($source) && !$source instanceof \ArrayAccess) {
             throw new \InvalidArgumentException('Source must be an array or an instance of \ArrayAccess');
@@ -49,7 +49,10 @@ class FromMapContext implements ContextInterface
     public function run($value)
     {
         $key = $this->key->getValue($value);
-        
-        return $this->value->getValue($this->source[$key]);
+        if ($this->value) {
+            return $this->value->getValue($this->source[$key]);
+        } else {
+            return $this->source[$key];
+        }
     }
 }
