@@ -3,6 +3,7 @@
 namespace YevgenGrytsay\Bandicoot;
 use YevgenGrytsay\Bandicoot\Context\ContextInterface;
 use YevgenGrytsay\Bandicoot\Context\ContextResolverInterface;
+use YevgenGrytsay\Bandicoot\Context\FromMapContext;
 use YevgenGrytsay\Bandicoot\Context\IteratorContext;
 use YevgenGrytsay\Bandicoot\Context\ListContext;
 use YevgenGrytsay\Bandicoot\Context\RenderContext;
@@ -100,6 +101,26 @@ class Builder
         $accessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $accessor);
         $context = new UnwindArrayContext($accessor, $this->factory->getMerge(), $render);
 
+        return $context;
+    }
+
+    /**
+     * @param $source
+     * @param $keyAccessor
+     * @param $valueAccessor
+     * @return FromMapContext
+     */
+    public function fromMap($source, $keyAccessor, $valueAccessor)
+    {
+        if (!$keyAccessor instanceof ConstantPropertyAccess) {
+            $keyAccessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $keyAccessor);
+        }
+        if (!$valueAccessor instanceof ConstantPropertyAccess) {
+            $valueAccessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $valueAccessor);
+        }
+        
+        $context = new FromMapContext($source, $keyAccessor, $valueAccessor);
+        
         return $context;
     }
 

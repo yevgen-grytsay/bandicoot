@@ -17,6 +17,7 @@ $dataSource = new ArrayIterator(array(
     array('jde' => 123456, 'name' => 'Lenovo P780', 'img' => array('http://image1.jpg', 'http://rsesg.jpg')),
     array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'))
 ));
+$priceMap = array(123456 => array('value' => 1200), 98765 => array('value' => 1300));
 
 class ArrayToXml
 {
@@ -176,6 +177,8 @@ $render = $b->render([
 //            'picture' => $b->_list($b->unwindArray('img')),
 //            'picture2' => $b->_list($b->unwindArray('img')->each($b->self())),
             'picture3' => $b->_list($b->unwindArray('img')),
+            'price' => $b->fromMap($priceMap, 'jde', 'value'),
+            'price2' => $b->fromMap($priceMap, 'jde', 'value'),
 //            'picture4' => $b->_list($b->unwindArray('img')->each($b->render([
 //                'pic' => $b->self()
 //            ]))),
