@@ -58,8 +58,12 @@ class Builder
     {
         $context = new RenderContext($config, $this->factory, $resolver);
 
-        return function() use($context) {
-            return $context->run(null, new \SplStack());
+        return function($data = null) use($context) {
+            $stack = new \SplStack();
+            $stack->push('root');
+            $stack->push($data);
+
+            return $context->run($data, $stack);
         };
     }
 

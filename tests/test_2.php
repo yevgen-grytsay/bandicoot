@@ -174,8 +174,15 @@ $factory = new Factory(new DefaultPropertyAccess(), $merge, $listMerge);
 $b = new Builder($factory);
 
 $render = $b->describe([
+    'input_value',
     'result' => $b->render([
+        'input_value',
         'product' => $b->each($dataSource, [
+            'input_value' => function($product, \YevgenGrytsay\Bandicoot\StackSearch $search) {
+                $data = $search->closest('root');
+
+                return $data['input_value'];
+            },
             'jde',
             'prodname' => 'name',
             'mticode' => 'jde',
@@ -209,7 +216,7 @@ $render = $b->describe([
     ])
 ]);
 
-$result = $render();
+$result = $render(['input_value' => 'Hello']);
 var_dump($result);
 
 //creating object of SimpleXMLElement
