@@ -88,6 +88,7 @@ class RenderContext implements ContextInterface
      * @param $context
      *
      * @return array
+     * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
     protected function resolveContext($field, $context)
@@ -101,8 +102,9 @@ class RenderContext implements ContextInterface
         }
         else if (is_numeric($field) && is_string($context)) {
             $result = array($context, new ValueContext($context, $this->factory->getPropertyAccessEngine()));
-        }
-        else {
+        } else if (is_string($field) && is_callable($context)) {
+            $result = array($field, new CallableContext($context));
+        } else {
             throw new \RuntimeException('Can not determine context');
         }
 

@@ -175,11 +175,15 @@ $render = $b->render([
             'jde',
             'prodname' => 'name',
             'mticode' => 'jde',
+            'no_value' => 'im_not_here',
 //            'picture' => $b->_list($b->unwindArray('img')),
 //            'picture2' => $b->_list($b->unwindArray('img')->each($b->self())),
             'picture3' => $b->_list($b->unwindArray('img')),
             'price' => $b->fromMap($priceMap, 'jde', 'value'),
             'price2' => $b->fromMap($priceFlatMap, 'jde'),
+            'callable' => function($product) {
+                return '_'.$product['jde'].'_';
+            }
 //            'picture4' => $b->_list($b->unwindArray('img')->each($b->render([
 //                'pic' => $b->self()
 //            ]))),
