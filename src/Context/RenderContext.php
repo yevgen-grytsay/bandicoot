@@ -98,22 +98,32 @@ class RenderContext implements ContextInterface
      */
     protected function resolveContext($field, $context)
     {
-        $result = null;
+        $helperList = array();
+        if (is_array($context)) {
+            $ctx = array_shift($context);
+            $helperList = array_shift($context);
+            $context = $ctx;
+        }
         if ($context instanceof ContextInterface) {
-            $result = array($field, $context);
+            $obj = $context;
         }
         else if (is_string($field) && is_string($context)) {
-            $result = array($field, new ValueContext($context, $this->factory->getPropertyAccessEngine()));
+            $obj = new ValueContext($context, $this->factory->getPropertyAccessEngine());
         }
         else if (is_numeric($field) && is_string($context)) {
-            $result = array($context, new ValueContext($context, $this->factory->getPropertyAccessEngine()));
+            $field = $context;
+            $obj = new ValueContext($context, $this->factory->getPropertyAccessEngine());
         } else if (is_string($field) && is_callable($context)) {
-            $result = array($field, new CallableContext($context));
+            $obj = new CallableContext($context);
         } else {
             throw new \RuntimeException('Can not determine context');
         }
 
-        return $result;
+        if ($helperList) {
+            $obj = $this->factory->decorateWithHelpers($obj, $helperList);
+        }
+
+        return array($field, $obj);
     }
 
     /**

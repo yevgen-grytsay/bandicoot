@@ -183,7 +183,7 @@ $render = $b->describe([
 //            'picture' => $b->_list($b->unwindArray('img')),
 //            'picture2' => $b->_list($b->unwindArray('img')->each($b->self())),
             'picture3' => $b->_list($b->unwindArray('img')),
-            'price' => $b->fromMap($priceMap, 'jde', 'value'),
+            'price' => [$b->fromMap($priceMap, 'jde', 'value'), ['cdata']],
             'price2' => $b->fromMap($priceFlatMap, 'jde'),
             'callable' => function($product) {
                 return '_'.$product['jde'].'_';

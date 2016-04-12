@@ -7,6 +7,7 @@
 namespace YevgenGrytsay\Bandicoot;
 
 
+use YevgenGrytsay\Bandicoot\Context\ContextInterface;
 use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
@@ -62,5 +63,16 @@ class Factory
     public function getListMerge()
     {
         return $this->listMerge;
+    }
+
+    /**
+     * @param ContextInterface $context
+     * @param array $helperNames
+     * @return ContextInterface
+     * //TODO: implement
+     */
+    public function decorateWithHelpers(ContextInterface $context, array $helperNames)
+    {
+        return $context;
     }
 }
