@@ -19,6 +19,10 @@ $dataSource = new ArrayIterator(array(
 ));
 $priceMap = array(123456 => array('value' => 1200), 98765 => array('value' => 1300));
 $priceFlatMap = array(123456 => '1200.50', 98765 => '1300.50');
+$storeMap = array(
+    24 => array('ext_id' => 'W600'),
+    141 => array('ext_id' => 'W330'),
+);
 
 class ArrayToXml
 {
@@ -169,7 +173,7 @@ $listMerge = new MergeEachStrategy($nestedMerge);
 $factory = new Factory(new DefaultPropertyAccess(), $merge, $listMerge);
 $b = new Builder($factory);
 
-$render = $b->render([
+$render = $b->describe([
     'result' => $b->render([
         'product' => $b->each($dataSource, [
             'jde',
@@ -183,7 +187,16 @@ $render = $b->render([
             'price2' => $b->fromMap($priceFlatMap, 'jde'),
             'callable' => function($product) {
                 return '_'.$product['jde'].'_';
-            }
+            },
+            'stores' => $b->render(array(
+                'store' => $b->each(new ArrayIterator($storeMap), array(
+                    'prod' => function($store, \YevgenGrytsay\Bandicoot\StackSearch $search) {
+                        $product = $search->closest('product');
+
+                        return sprintf('[%s][%s]', $store['ext_id'], $product['name']);
+                    }
+                ))
+            ))
 //            'picture4' => $b->_list($b->unwindArray('img')->each($b->render([
 //                'pic' => $b->self()
 //            ]))),
@@ -196,7 +209,7 @@ $render = $b->render([
     ])
 ]);
 
-$result = $render->run(null);
+$result = $render();
 var_dump($result);
 
 //creating object of SimpleXMLElement

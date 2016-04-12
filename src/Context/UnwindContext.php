@@ -30,9 +30,10 @@ class UnwindContext implements ContextInterface
     /**
      * @param $value
      *
+     * @param \SplStack $stack
      * @return mixed
      */
-    public function run($value)
+    public function run($value, \SplStack $stack)
     {
         /**
          * @var int|string $key
@@ -41,7 +42,7 @@ class UnwindContext implements ContextInterface
         $result = array();
         $merge = $this->createMerge();
         foreach ($this->config as $key => $context) {
-            $ret = $context->run($value);
+            $ret = $context->run($value, $stack);
             $merge->merge($result, $ret, $key);
         }
 

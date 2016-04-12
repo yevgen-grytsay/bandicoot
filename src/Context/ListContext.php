@@ -35,12 +35,13 @@ class ListContext implements ContextInterface
     /**
      * @param $value
      *
+     * @param \SplStack $stack
      * @return mixed
      */
-    public function run($value)
+    public function run($value, \SplStack $stack)
     {
         $result = array();
-        foreach ($this->dataSource->run($value) as $key => $item) {
+        foreach ($this->dataSource->run($value, $stack) as $key => $item) {
             $this->merge->merge($result, $item, $key);
         }
 

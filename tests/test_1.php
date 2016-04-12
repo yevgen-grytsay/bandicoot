@@ -124,7 +124,7 @@ $listMerge = new MergeEachStrategy($nestedMerge);
 $factory = new Factory(new DefaultPropertyAccess(), $merge, $listMerge);
 $b = new Builder($factory);
 
-$render = $b->render([
+$render = $b->describe([
     'result' => $b->render([
         'product' => $b->each($dataSource, [
             'jde',
@@ -145,7 +145,7 @@ $render = $b->render([
     ])
 ]);
 
-$result = $render->run(null);
+$result = $render();
 var_dump($result);
 
 $result = A1_Helper_Xml::arrayToXml($result);

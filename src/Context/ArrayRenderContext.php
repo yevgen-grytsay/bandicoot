@@ -26,10 +26,11 @@ class ArrayRenderContext implements ContextInterface
     /**
      * @param $value
      *
+     * @param \SplStack $stack
      * @return array
      */
-    public function run($value)
+    public function run($value, \SplStack $stack)
     {
-        return $this->context->run($value);
+        return $this->context->run($value, $stack);
     }
 }

@@ -7,6 +7,8 @@
 namespace YevgenGrytsay\Bandicoot\Context;
 
 
+use YevgenGrytsay\Bandicoot\StackSearch;
+
 class CallableContext implements ContextInterface
 {
     /**
@@ -32,10 +34,11 @@ class CallableContext implements ContextInterface
     /**
      * @param $value
      *
+     * @param \SplStack $stack
      * @return mixed
      */
-    public function run($value)
+    public function run($value, \SplStack $stack)
     {
-        return call_user_func($this->callable, $value);
+        return call_user_func($this->callable, $value, new StackSearch($stack));
     }
 }

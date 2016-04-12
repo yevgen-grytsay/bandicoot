@@ -49,6 +49,21 @@ class Builder
     }
 
     /**
+     * @param array $config
+     *
+     * @param \YevgenGrytsay\Bandicoot\Context\ContextResolverInterface $resolver
+     * @return \Closure
+     */
+    public function describe(array $config, ContextResolverInterface $resolver = null)
+    {
+        $context = new RenderContext($config, $this->factory, $resolver);
+
+        return function() use($context) {
+            return $context->run(null, new \SplStack());
+        };
+    }
+
+    /**
      * @param \Iterator $data
      * @param array     $renderConfig
      *

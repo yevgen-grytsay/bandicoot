@@ -44,9 +44,10 @@ class FromMapContext implements ContextInterface
     /**
      * @param $value
      *
+     * @param \SplStack $stack
      * @return mixed
      */
-    public function run($value)
+    public function run($value, \SplStack $stack)
     {
         $key = $this->key->getValue($value);
         if ($this->value) {

@@ -53,10 +53,10 @@ class RenderContext implements ContextInterface
     /**
      * @param $value
      *
+     * @param \SplStack $stack
      * @return array
-     * @throws \RuntimeException
      */
-    public function run($value)
+    public function run($value, \SplStack $stack)
     {
         $result = array();
         $listMerge = $this->getListMerge();
@@ -66,7 +66,12 @@ class RenderContext implements ContextInterface
          */
         foreach ($this->config as $field => $context) {
             list($field, $context) = $this->resolveContext($field, $context);
-            $res = $context->run($value);
+            $stack = clone $stack;
+            $stack->push($value);
+            $stack->push($field);
+            $res = $context->run($value, $stack);
+            $stack->pop();
+            $stack->pop();
             if ($context instanceof ListContext || $context instanceof IteratorContext) {
                 $listMerge->merge($result, (array)$res, $field);
                 /**

@@ -13,7 +13,7 @@ class ValueSelfContextTest extends \PHPUnit_Framework_TestCase
     {
         $ctx = new ValueSelfContext();
 
-        $result = $ctx->run('sample value');
+        $result = $ctx->run('sample value', new \SplStack());
 
         $this->assertEquals('sample value', $result);
     }
