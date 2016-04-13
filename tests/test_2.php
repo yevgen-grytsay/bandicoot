@@ -171,6 +171,11 @@ $merge = new FieldMergeStrategy();
 $nestedMerge = new FieldArrayMergeStrategy();
 $listMerge = new MergeEachStrategy($nestedMerge);
 $factory = new Factory(new DefaultPropertyAccess(), $merge, $listMerge);
+$factory->setHelperResolver(array(
+    'cdata' => function($value) {
+        return sprintf('<![CDATA[%s]]>', $value);
+    }
+));
 $b = new Builder($factory);
 
 $render = $b->describe([
