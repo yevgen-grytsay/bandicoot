@@ -14,8 +14,8 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy;
 require_once __DIR__.'/../vendor/autoload.php';
 
 $productList = array(
-    array('jde' => 123456, 'name' => 'Lenovo P780', 'img' => array('http://image1.jpg', 'http://rsesg.jpg')),
-    array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'))
+    array('jde' => 123456, 'name' => 'Lenovo P780', 'img' => array('http://image1.jpg', 'http://rsesg.jpg'), 'control' => 0),
+    array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'), 'control' => 1)
 );
 $productList_2 = array(
     array('jde' => 321564, 'name' => 'Logitech G500s', 'img' => array('http://image3.jpg', 'http://rsesg_2.jpg')),
@@ -203,6 +203,7 @@ $render = $b->describe([
 
                         return $data['input_value'];
                     },
+                    'control' => $b->ifEquals('control', 1, 'Y', 'N'),
                     'jde',
                     'prodname' => 'name',
                     'mticode' => 'jde',

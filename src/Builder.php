@@ -117,6 +117,32 @@ class Builder
             return $property->getValue($data) ? $value : $fallback;
         });
     }
+
+    /**
+     * @param $property
+     * @param $against
+     * @param $value
+     * @param $fallback
+     * @param bool $strict
+     * @return CallableContext
+     * @throws \InvalidArgumentException
+     */
+    public function ifEquals($property, $against, $value, $fallback, $strict = false)
+    {
+        if ($strict) {
+            $eq = function($a, $b) { return $a === $b; };
+        } else {
+            $eq = function($a, $b) { return $a == $b; };
+        }
+        if (!$property instanceof PropertyAccessInterface) {
+            $property = new ConstantPropertyAccess($this->factory->getPropertyAccessEngine(), $property);
+        }
+
+        return new CallableContext(function($data) use($property, $eq, $against, $value, $fallback) {
+            $prop = $property->getValue($data);
+            return $eq($prop, $value) ? $value : $fallback;
+        });
+    }
     
     /**
      * @param array $config
