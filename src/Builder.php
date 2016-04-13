@@ -1,8 +1,7 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot;
-use YevgenGrytsay\Bandicoot\Context\ContextInterface;
-use YevgenGrytsay\Bandicoot\Context\ContextResolverInterface;
+use YevgenGrytsay\Bandicoot\Context\Context;
 use YevgenGrytsay\Bandicoot\Context\FromMapContext;
 use YevgenGrytsay\Bandicoot\Context\IteratorContext;
 use YevgenGrytsay\Bandicoot\Context\ListContext;
@@ -35,17 +34,12 @@ class Builder
     }
 
     /**
-     * @param array                                                     $config
-     *
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextResolverInterface $resolver
-     *
-     * @return \YevgenGrytsay\Bandicoot\Context\RenderContext
+     * @param array $config
+     * @return RenderContext
      */
-    public function render(array $config, ContextResolverInterface $resolver = null)
+    public function render(array $config)
     {
-        $context = new RenderContext($config, $this->factory, $resolver);
-
-        return $context;
+        return new RenderContext($config, $this->factory);
     }
 
     /**
@@ -76,9 +70,8 @@ class Builder
     public function each(\Iterator $data, array $renderConfig)
     {
         $render = $this->render($renderConfig);
-        $context = new IteratorContext($data, $render, $this->factory->getMerge());
 
-        return $context;
+        return new IteratorContext($data, $render, $this->factory->getMerge());
     }
 
     /**
@@ -88,9 +81,7 @@ class Builder
      */
     public function value($name)
     {
-        $context = new ValueContext($name, $this->getPropertyAccessEngine());
-
-        return $context;
+        return new ValueContext($name, $this->getPropertyAccessEngine());
     }
 
     /**
@@ -100,27 +91,24 @@ class Builder
      */
     public function unwind(array $config)
     {
-        $context = new UnwindContext($config);
-
-        return $context;
+        return new UnwindContext($config);
     }
 
     /**
-     * @param                                                        $accessor
-     * @param array                                                  $renderConfig
+     * @param string $property
+     * @param array  $renderConfig
      *
      * @return \YevgenGrytsay\Bandicoot\Context\UnwindArrayContext
      */
-    public function unwindArray($accessor, array $renderConfig = null)
+    public function unwindArray($property, array $renderConfig = null)
     {
-        $render = null;
+        $renderer = null;
         if ($renderConfig) {
-            $render = $this->render($renderConfig);
+            $renderer = $this->render($renderConfig);
         }
-        $accessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $accessor);
-        $context = new UnwindArrayContext($accessor, $this->factory->getMerge(), $render);
+        $accessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $property);
 
-        return $context;
+        return new UnwindArrayContext($accessor, $this->factory->getMerge(), $renderer);
     }
 
     /**
@@ -139,9 +127,7 @@ class Builder
             $valueAccessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $valueAccessor);
         }
         
-        $context = new FromMapContext($source, $keyAccessor, $valueAccessor);
-        
-        return $context;
+        return new FromMapContext($source, $keyAccessor, $valueAccessor);
     }
 
     /**
@@ -149,21 +135,17 @@ class Builder
      */
     public function self()
     {
-        $context = new ValueSelfContext();
-
-        return $context;
+        return new ValueSelfContext();
     }
 
     /**
-     * @param ContextInterface $context
+     * @param Context $context
      *
      * @return ListContext
      */
-    public function _list(ContextInterface $context)
+    public function _list(Context $context)
     {
-        $context = new ListContext($context, $this->factory->getMerge());
-
-        return $context;
+        return new ListContext($context, $this->factory->getMerge());
     }
 
     /**

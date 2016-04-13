@@ -8,14 +8,14 @@ use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-class UnwindArrayContext implements ContextInterface
+class UnwindArrayContext implements Context
 {
     /**
      * @var ConstantPropertyAccess
      */
     protected $accessor;
     /**
-     * @var ContextInterface
+     * @var Context
      */
     protected $context;
     /**
@@ -28,9 +28,9 @@ class UnwindArrayContext implements ContextInterface
      *
      * @param \YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess $accessor
      * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface  $merge
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface|null         $context
+     * @param \YevgenGrytsay\Bandicoot\Context\Context|null         $context
      */
-    public function __construct(ConstantPropertyAccess $accessor, MergeStrategyInterface $merge, ContextInterface $context = null)
+    public function __construct(ConstantPropertyAccess $accessor, MergeStrategyInterface $merge, Context $context = null)
     {
         $this->accessor = $accessor;
         $this->merge = $merge;
@@ -47,7 +47,7 @@ class UnwindArrayContext implements ContextInterface
     {
         /**
          * @var int|string $key
-         * @var ContextInterface $context
+         * @var Context $context
          */
         $result = array();
         $context = $this->getContext();
@@ -75,11 +75,11 @@ class UnwindArrayContext implements ContextInterface
     }
 
     /**
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface $context
+     * @param \YevgenGrytsay\Bandicoot\Context\Context $context
      *
      * @return $this
      */
-    public function each(ContextInterface $context)
+    public function each(Context $context)
     {
         $this->context = $context;
 
@@ -96,7 +96,7 @@ class UnwindArrayContext implements ContextInterface
     }
 
     /**
-     * @return \YevgenGrytsay\Bandicoot\Context\ContextInterface
+     * @return \YevgenGrytsay\Bandicoot\Context\Context
      */
     protected function createDefaultContext()
     {

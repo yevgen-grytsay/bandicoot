@@ -3,13 +3,11 @@
  * @author: Yevgen Grytsay hrytsai@mti.ua
  * @date: 12.04.16
  */
-
 namespace YevgenGrytsay\Bandicoot\Context;
-
 
 use YevgenGrytsay\Bandicoot\StackSearch;
 
-class CallableContext implements ContextInterface
+class CallableContext implements Context
 {
     /**
      * @var callable

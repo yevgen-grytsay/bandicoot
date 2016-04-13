@@ -7,7 +7,7 @@
 namespace YevgenGrytsay\Bandicoot;
 
 
-use YevgenGrytsay\Bandicoot\Context\ContextInterface;
+use YevgenGrytsay\Bandicoot\Context\Context;
 use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
@@ -66,12 +66,12 @@ class Factory
     }
 
     /**
-     * @param ContextInterface $context
+     * @param Context $context
      * @param array $helperNames
-     * @return ContextInterface
+     * @return Context
      * //TODO: implement
      */
-    public function decorateWithHelpers(ContextInterface $context, array $helperNames)
+    public function decorateWithHelpers(Context $context, array $helperNames)
     {
         return $context;
     }

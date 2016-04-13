@@ -9,10 +9,10 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-class ListContext implements ContextInterface
+class ListContext implements Context
 {
     /**
-     * @var ContextInterface
+     * @var Context
      */
     protected $dataSource;
     /**
@@ -23,10 +23,10 @@ class ListContext implements ContextInterface
     /**
      * ListContext constructor.
      *
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface                 $dataSource
+     * @param \YevgenGrytsay\Bandicoot\Context\Context                 $dataSource
      * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface $merge
      */
-    public function __construct(ContextInterface $dataSource, MergeStrategyInterface $merge)
+    public function __construct(Context $dataSource, MergeStrategyInterface $merge)
     {
         $this->dataSource = $dataSource;
         $this->merge = $merge;

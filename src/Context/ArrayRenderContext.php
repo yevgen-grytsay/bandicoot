@@ -6,19 +6,19 @@ namespace YevgenGrytsay\Bandicoot\Context;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-class ArrayRenderContext implements ContextInterface
+class ArrayRenderContext implements Context
 {
     /**
-     * @var ContextInterface
+     * @var Context
      */
     protected $context;
 
     /**
      * ArrayRenderContext constructor.
      *
-     * @param ContextInterface $context
+     * @param Context $context
      */
-    public function __construct(ContextInterface $context)
+    public function __construct(Context $context)
     {
         $this->context = $context;
     }
