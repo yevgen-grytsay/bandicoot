@@ -6,7 +6,7 @@ namespace YevgenGrytsay\Bandicoot\Context;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-interface ContextInterface
+interface Context
 {
     /**
      * @param $value

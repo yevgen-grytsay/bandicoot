@@ -7,14 +7,14 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-class IteratorContext implements ContextInterface
+class IteratorContext implements Context
 {
     /**
      * @var \Iterator
      */
     protected $iterator;
     /**
-     * @var ContextInterface
+     * @var Context
      */
     protected $context;
     /**
@@ -26,10 +26,10 @@ class IteratorContext implements ContextInterface
      * IteratorContext constructor.
      *
      * @param \Iterator                                                         $iterator
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextInterface                 $context
+     * @param \YevgenGrytsay\Bandicoot\Context\Context                 $context
      * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface $merge
      */
-    public function __construct(\Iterator $iterator, ContextInterface $context, MergeStrategyInterface $merge)
+    public function __construct(\Iterator $iterator, Context $context, MergeStrategyInterface $merge)
     {
         $this->iterator = $iterator;
         $this->context = $context;

@@ -9,7 +9,7 @@ namespace YevgenGrytsay\Bandicoot\Context;
 
 use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
 
-class FromMapContext implements ContextInterface
+class FromMapContext implements Context
 {
     /**
      * @var ConstantPropertyAccess|array

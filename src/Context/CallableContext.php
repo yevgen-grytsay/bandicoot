@@ -7,7 +7,7 @@
 namespace YevgenGrytsay\Bandicoot\Context;
 
 
-class CallableContext implements ContextInterface
+class CallableContext implements Context
 {
     /**
      * @var callable

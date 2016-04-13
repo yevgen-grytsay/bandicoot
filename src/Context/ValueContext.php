@@ -7,7 +7,7 @@ use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-class ValueContext implements ContextInterface
+class ValueContext implements Context
 {
     /**
      * @var string

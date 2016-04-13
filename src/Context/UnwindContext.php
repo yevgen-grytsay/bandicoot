@@ -6,7 +6,7 @@ namespace YevgenGrytsay\Bandicoot\Context;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-class UnwindContext implements ContextInterface
+class UnwindContext implements Context
 {
     /**
      * @var string
@@ -36,7 +36,7 @@ class UnwindContext implements ContextInterface
     {
         /**
          * @var int|string $key
-         * @var ContextInterface $context
+         * @var Context $context
          */
         $result = array();
         $merge = $this->createMerge();

@@ -8,7 +8,7 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
  * @date  : 02.10.15
  */
-class RenderContext implements ContextInterface
+class RenderContext implements Context
 {
     /**
      * @var MergeStrategyInterface
@@ -25,9 +25,10 @@ class RenderContext implements ContextInterface
 
     /**
      * Each item in config can be defined in one of the following ways:
-     * 1) ["name" => "accessor"]:       ["name" => ValueContext("accessor")]
-     * 3) ["name" => ContextInterface]: ["name" => ValueContext("accessor")]
-     * 2) ["accessor"]:                 ["accessor" => ValueContext("accessor")]
+     * 1) ["name"]:                             ["name" => ValueContext("name")]
+     * 2) ["name" => "accessor"]:               ["name" => ValueContext("accessor")]
+     * 3) ["name" => ContextInterface $ctx]:    ["name" => $ctx]
+     * 4) ["name" => Closure $fnc]:             ["name" => ClosureContext($fnc)]
      *
      * @param array                            $config
      * @param \YevgenGrytsay\Bandicoot\Factory $factory
@@ -54,6 +55,7 @@ class RenderContext implements ContextInterface
      * @param $value
      *
      * @return array
+     * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
     public function run($value)
@@ -62,7 +64,7 @@ class RenderContext implements ContextInterface
         $listMerge = $this->getListMerge();
         /**
          * @var string|int $field
-         * @var ContextInterface $context
+         * @var Context $context
          */
         foreach ($this->config as $field => $context) {
             list($field, $context) = $this->resolveContext($field, $context);
@@ -94,7 +96,7 @@ class RenderContext implements ContextInterface
     protected function resolveContext($field, $context)
     {
         $result = null;
-        if ($context instanceof ContextInterface) {
+        if ($context instanceof Context) {
             $result = array($field, $context);
         }
         else if (is_string($field) && is_string($context)) {
