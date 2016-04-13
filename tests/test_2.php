@@ -13,16 +13,28 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-$dataSource = new ArrayIterator(array(
+$productList = array(
     array('jde' => 123456, 'name' => 'Lenovo P780', 'img' => array('http://image1.jpg', 'http://rsesg.jpg')),
     array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'))
-));
-$priceMap = array(123456 => array('value' => 1200), 98765 => array('value' => 1300));
-$priceFlatMap = array(123456 => '1200.50', 98765 => '1300.50');
+);
+$productList_2 = array(
+    array('jde' => 321564, 'name' => 'Logitech G500s', 'img' => array('http://image3.jpg', 'http://rsesg_2.jpg')),
+    array('jde' => 6547, 'name' => 'Samsung Galaxy S6', 'img' => array('http://image4.jpg'))
+);
+$dataSource = new ArrayIterator($productList);
+$priceMap = array(123456 => array('value' => 1200), 98765 => array('value' => 1300),
+    321564 => array('value' => 56.8), 6547 => array('value' => 120.6));
+$priceFlatMap = array(123456 => '1200.50', 98765 => '1300.50', 321564 => '56.8', 6547 => '120.60');
 $storeMap = array(
     24 => array('ext_id' => 'W600'),
     141 => array('ext_id' => 'W330'),
 );
+
+$groups = array(
+    array('name' => 'Printers', 'products' => $productList),
+    array('name' => 'Phones', 'products' => $productList_2),
+);
+
 
 class ArrayToXml
 {
@@ -182,42 +194,40 @@ $render = $b->describe([
     'input_value',
     'result' => $b->render([
         'input_value',
-        'product' => $b->each($dataSource, [
-            'input_value' => function($product, \YevgenGrytsay\Bandicoot\StackSearch $search) {
-                $data = $search->closest('root');
+        'productgroup' => $b->each(new ArrayIterator($groups), array(
+            'name',
+            'products' => $b->render(array(
+                'product' => $b->eachUnwind('products', array(
+                    'input_value' => function($product, \YevgenGrytsay\Bandicoot\StackSearch $search) {
+                        $data = $search->closest('root');
 
-                return $data['input_value'];
-            },
-            'jde',
-            'prodname' => 'name',
-            'mticode' => 'jde',
-            'no_value' => 'im_not_here',
+                        return $data['input_value'];
+                    },
+                    'jde',
+                    'prodname' => 'name',
+                    'mticode' => 'jde',
+                    'no_value' => 'im_not_here',
 //            'picture' => $b->_list($b->unwindArray('img')),
 //            'picture2' => $b->_list($b->unwindArray('img')->each($b->self())),
-            'picture3' => $b->_list($b->unwindArray('img')),
-            'price' => [$b->fromMap($priceMap, 'jde', 'value'), ['cdata']],
-            'price2' => $b->fromMap($priceFlatMap, 'jde'),
-            'callable' => function($product) {
-                return '_'.$product['jde'].'_';
-            },
-            'stores' => $b->render(array(
-                'store' => $b->each(new ArrayIterator($storeMap), array(
-                    'prod' => function($store, \YevgenGrytsay\Bandicoot\StackSearch $search) {
-                        $product = $search->closest('product');
+                    'picture3' => $b->_list($b->unwindArray('img')),
+                    'price' => [$b->fromMap($priceMap, 'jde', 'value'), ['cdata']],
+                    'price2' => $b->fromMap($priceFlatMap, 'jde'),
+                    'callable' => function($product) {
+                        return '_'.$product['jde'].'_';
+                    },
+                    'stores' => $b->render(array(
+                        'store' => $b->each(new ArrayIterator($storeMap), array(
+                            'prod' => function($store, \YevgenGrytsay\Bandicoot\StackSearch $search) {
+                                $product = $search->closest('product');
 
-                        return sprintf('[%s][%s]', $store['ext_id'], $product['name']);
-                    }
+                                return sprintf('[%s][%s]', $store['ext_id'], $product['name']);
+                            }
+                        ))
+                    )),
+                    'constant' => $b->constant('always the same value')
                 ))
             ))
-//            'picture4' => $b->_list($b->unwindArray('img')->each($b->render([
-//                'pic' => $b->self()
-//            ]))),
-//            'picture2' => $b->_list()
-//            'picture' => $b->unwindArray('img')->renderArray($b->self()),
-
-            //'picture2' => 'list(unwindArray(img)|renderArray(:self))'
-            //'picture2' => $b->_list($b->unwindArray('img')->render($b->self()))
-        ])
+        ))
     ])
 ]);
 

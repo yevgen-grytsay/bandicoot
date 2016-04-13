@@ -1,6 +1,7 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot;
+use YevgenGrytsay\Bandicoot\Context\ConstantContext;
 use YevgenGrytsay\Bandicoot\Context\Context;
 use YevgenGrytsay\Bandicoot\Context\FromMapContext;
 use YevgenGrytsay\Bandicoot\Context\IteratorContext;
@@ -89,6 +90,15 @@ class Builder
     }
 
     /**
+     * @param $value
+     * @return ConstantContext
+     */
+    public function constant($value)
+    {
+        return new ConstantContext($value);
+    }
+    
+    /**
      * @param array $config
      *
      * @return UnwindContext
@@ -98,6 +108,16 @@ class Builder
         return new UnwindContext($config);
     }
 
+    /**
+     * @param $property
+     * @param array $config
+     * @return ListContext
+     */
+    public function eachUnwind($property, array $config)
+    {
+        return new ListContext($this->unwindArray($property, $config), $this->factory->getMerge());
+    }
+    
     /**
      * @param string $property
      * @param array  $renderConfig
