@@ -1,6 +1,7 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot;
+use YevgenGrytsay\Bandicoot\Context\CallableContext;
 use YevgenGrytsay\Bandicoot\Context\ConstantContext;
 use YevgenGrytsay\Bandicoot\Context\Context;
 use YevgenGrytsay\Bandicoot\Context\FromMapContext;
@@ -13,6 +14,7 @@ use YevgenGrytsay\Bandicoot\Context\UnwindContext;
 use YevgenGrytsay\Bandicoot\Context\ValueContext;
 use YevgenGrytsay\Bandicoot\Context\ValueSelfContext;
 use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
+use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -96,6 +98,24 @@ class Builder
     public function constant($value)
     {
         return new ConstantContext($value);
+    }
+
+    /**
+     * @param $property
+     * @param $value
+     * @param $fallback
+     * @return CallableContext
+     * @throws \InvalidArgumentException
+     */
+    public function ifElse($property, $value, $fallback)
+    {
+        if (!$property instanceof PropertyAccessInterface) {
+            $property = new ConstantPropertyAccess($this->factory->getPropertyAccessEngine(), $property);
+        }
+        
+        return new CallableContext(function($data) use($property, $value, $fallback) {
+            return $property->getValue($data) ? $value : $fallback;
+        });
     }
     
     /**

@@ -26,8 +26,8 @@ $priceMap = array(123456 => array('value' => 1200), 98765 => array('value' => 13
     321564 => array('value' => 56.8), 6547 => array('value' => 120.6));
 $priceFlatMap = array(123456 => '1200.50', 98765 => '1300.50', 321564 => '56.8', 6547 => '120.60');
 $storeMap = array(
-    24 => array('ext_id' => 'W600'),
-    141 => array('ext_id' => 'W330'),
+    24 => array('ext_id' => 'W600', 'amount' => 20),
+    141 => array('ext_id' => 'W330', 'amount' => 0),
 );
 
 $groups = array(
@@ -221,7 +221,8 @@ $render = $b->describe([
                                 $product = $search->closest('product');
 
                                 return sprintf('[%s][%s]', $store['ext_id'], $product['name']);
-                            }
+                            },
+                            'amount' => $b->ifElse('amount', '+', '-')
                         ))
                     )),
                     'constant' => $b->constant('always the same value')
