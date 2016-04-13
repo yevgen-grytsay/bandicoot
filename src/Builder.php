@@ -6,6 +6,7 @@ use YevgenGrytsay\Bandicoot\Context\FromMapContext;
 use YevgenGrytsay\Bandicoot\Context\IteratorContext;
 use YevgenGrytsay\Bandicoot\Context\ListContext;
 use YevgenGrytsay\Bandicoot\Context\RenderContext;
+use YevgenGrytsay\Bandicoot\Context\RendererFactory;
 use YevgenGrytsay\Bandicoot\Context\UnwindArrayContext;
 use YevgenGrytsay\Bandicoot\Context\UnwindContext;
 use YevgenGrytsay\Bandicoot\Context\ValueContext;
@@ -22,6 +23,10 @@ class Builder
      * @var Factory
      */
     protected $factory;
+    /**
+     * @var RendererFactory
+     */
+    protected $renderFactory;
 
     /**
      * Builder constructor.
@@ -31,6 +36,7 @@ class Builder
     public function __construct(Factory $factory)
     {
         $this->factory = $factory;
+        $this->renderFactory = new RendererFactory($factory);
     }
 
     /**
@@ -39,18 +45,16 @@ class Builder
      */
     public function render(array $config)
     {
-        return new RenderContext($config, $this->factory);
+        return $this->renderFactory->createFromConfig($config);
     }
 
     /**
      * @param array $config
-     *
-     * @param \YevgenGrytsay\Bandicoot\Context\ContextResolverInterface $resolver
      * @return \Closure
      */
-    public function describe(array $config, ContextResolverInterface $resolver = null)
+    public function describe(array $config)
     {
-        $context = new RenderContext($config, $this->factory, $resolver);
+        $context = $this->renderFactory->createFromConfig($config);
 
         return function($data = null) use($context) {
             $stack = new \SplStack();

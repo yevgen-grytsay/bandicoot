@@ -17,7 +17,7 @@ class RenderContext implements Context
     /**
      * @var array
      */
-    protected $config = array();
+    protected $fieldMap = array();
     /**
      * @var \YevgenGrytsay\Bandicoot\Factory
      */
@@ -30,12 +30,12 @@ class RenderContext implements Context
      * 3) ["name" => Context $ctx]:             ["name" => $ctx]
      * 4) ["name" => Closure $fnc]:             ["name" => ClosureContext($fnc)]
      *
-     * @param array                            $config
+     * @param array                            $fieldMap
      * @param \YevgenGrytsay\Bandicoot\Factory $factory
      */
-    public function __construct(array $config, Factory $factory)
+    public function __construct(array $fieldMap, Factory $factory)
     {
-        $this->config = $config;
+        $this->fieldMap = $fieldMap;
         $this->factory = $factory;
     }
 
@@ -56,8 +56,6 @@ class RenderContext implements Context
      * @param \SplStack $stack
      * 
      * @return array
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
      */
     public function run($value, \SplStack $stack)
     {
@@ -67,8 +65,7 @@ class RenderContext implements Context
          * @var string|int $field
          * @var Context $context
          */
-        foreach ($this->config as $field => $context) {
-            list($field, $context) = $this->resolveContext($field, $context);
+        foreach ($this->fieldMap as $field => $context) {
             $stack = clone $stack;
             $stack->push($value);
             $stack->push($field);
@@ -89,44 +86,6 @@ class RenderContext implements Context
         }
 
         return $result;
-    }
-
-    /**
-     * @param $field
-     * @param $context
-     *
-     * @return array
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     */
-    protected function resolveContext($field, $context)
-    {
-        $helperList = array();
-        if (is_array($context)) {
-            $ctx = array_shift($context);
-            $helperList = array_shift($context);
-            $context = $ctx;
-        }
-        if ($context instanceof Context) {
-            $obj = $context;
-        }
-        else if (is_string($field) && is_string($context)) {
-            $obj = new ValueContext($context, $this->factory->getPropertyAccessEngine());
-        }
-        else if (is_numeric($field) && is_string($context)) {
-            $field = $context;
-            $obj = new ValueContext($context, $this->factory->getPropertyAccessEngine());
-        } else if (is_string($field) && is_callable($context)) {
-            $obj = new CallableContext($context);
-        } else {
-            throw new \RuntimeException('Can not determine context');
-        }
-
-        if ($helperList) {
-            $obj = $this->factory->decorateWithHelpers($obj, $helperList);
-        }
-
-        return array($field, $obj);
     }
 
     /**
