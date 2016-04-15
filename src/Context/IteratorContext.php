@@ -4,6 +4,7 @@ namespace YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\ContextFilterFactory;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\StackSearch;
+use YevgenGrytsay\Bandicoot\Util\CallbackFilterIterator;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -66,12 +67,13 @@ class IteratorContext implements Context
      * @param $value
      * @param \SplStack $stack
      * @return \CallbackFilterIterator|\Iterator
+     * @throws \InvalidArgumentException
      */
     private function createIterator($value, \SplStack $stack)
     {
         if ($this->filterFactory) {
             $filter = $this->filterFactory->createFilter($value, new StackSearch($stack));
-            return new \CallbackFilterIterator($this->iterator, function($current) use($filter) {
+            return new CallbackFilterIterator($this->iterator, function($current) use($filter) {
                 return $filter->accept($current);
             });
         } else {
