@@ -1,7 +1,9 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
+use YevgenGrytsay\Bandicoot\ContextFilterFactory;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
+use YevgenGrytsay\Bandicoot\StackSearch;
 
 /**
  * @author: Yevgen Grytsay <hrytsai@mti.ua>
@@ -21,19 +23,25 @@ class IteratorContext implements Context
      * @var \YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface
      */
     private $merge;
+    /**
+     * @var ContextFilterFactory
+     */
+    private $filterFactory;
 
     /**
      * IteratorContext constructor.
      *
-     * @param \Iterator                                                         $iterator
-     * @param \YevgenGrytsay\Bandicoot\Context\Context                 $context
+     * @param \Iterator $iterator
+     * @param \YevgenGrytsay\Bandicoot\Context\Context $context
      * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface $merge
+     * @param ContextFilterFactory $filterFactory
      */
-    public function __construct(\Iterator $iterator, Context $context, MergeStrategyInterface $merge)
+    public function __construct(\Iterator $iterator, Context $context, MergeStrategyInterface $merge, ContextFilterFactory $filterFactory = null)
     {
         $this->iterator = $iterator;
         $this->context = $context;
         $this->merge = $merge;
+        $this->filterFactory = $filterFactory;
     }
 
     /**
@@ -46,11 +54,28 @@ class IteratorContext implements Context
     {
         $return = array();
         $merge = $this->merge;
-        foreach ($this->iterator as $key => $item) {
+        foreach ($this->createIterator($value, $stack) as $key => $item) {
             $result = $this->context->run($item, $stack);
             $merge->merge($return, $result, $key);
         }
 
         return $return;
+    }
+
+    /**
+     * @param $value
+     * @param \SplStack $stack
+     * @return \CallbackFilterIterator|\Iterator
+     */
+    private function createIterator($value, \SplStack $stack)
+    {
+        if ($this->filterFactory) {
+            $filter = $this->filterFactory->createFilter($value, new StackSearch($stack));
+            return new \CallbackFilterIterator($this->iterator, function($current) use($filter) {
+                return $filter->accept($current);
+            });
+        } else {
+            return $this->iterator;
+        }
     }
 }

@@ -82,6 +82,19 @@ class Builder
     }
 
     /**
+     * @param \Iterator $data
+     * @param ContextFilterFactory $factory
+     * @param array $renderConfig
+     * @return IteratorContext
+     */
+    public function eachFilter(\Iterator $data, ContextFilterFactory $factory, array $renderConfig)
+    {
+        $render = $this->render($renderConfig);
+
+        return new IteratorContext($data, $render, $this->factory->getMerge(), $factory);
+    }
+
+    /**
      * @param $name
      *
      * @return ValueContext
