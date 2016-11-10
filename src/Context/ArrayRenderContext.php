@@ -29,6 +29,7 @@ class ArrayRenderContext implements Context
      *
      * @param \SplStack $stack
      * @return array
+     * @throws \Exception
      */
     public function run($value, \SplStack $stack)
     {

@@ -10,9 +10,10 @@ namespace YevgenGrytsay\Bandicoot;
 interface MergeStrategy
 {
     /**
-     * @param       $result
+     * @param array $result
      * @param array $list
      * @param       $key
+     * @return
      */
-    public function merge(&$result, array $list, $key);
+    public function merge(array &$result, array $list, $key);
 }

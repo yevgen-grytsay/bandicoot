@@ -33,6 +33,7 @@ class SymfonyAdapter implements PropertyAccess
      * @param $propertyPath
      *
      * @return mixed
+     * @throws \Exception
      */
     public function getValue($objectOrArray, $propertyPath)
     {

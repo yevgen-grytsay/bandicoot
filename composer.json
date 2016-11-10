@@ -25,6 +25,11 @@
       "YevgenGrytsay\\Bandicoot\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "YevgenGrytsay\\Bandicoot\\Tests\\": "tests/"
+    }
+  },
   "non-feature-branches": [
     "exp-refactor"
   ]

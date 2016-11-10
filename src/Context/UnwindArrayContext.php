@@ -2,7 +2,6 @@
 
 namespace YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
 
 /**
@@ -37,6 +36,7 @@ class UnwindArrayContext implements Context
      *
      * @param \SplStack $stack
      * @return mixed
+     * @throws \Exception
      */
     public function run($input, \SplStack $stack)
     {
@@ -61,6 +61,7 @@ class UnwindArrayContext implements Context
      * @param $value
      *
      * @return \ArrayIterator
+     * @throws \Exception
      */
     protected function _iterator($value)
     {
@@ -82,7 +83,7 @@ class UnwindArrayContext implements Context
     }
 
     /**
-     * @return \YevgenGrytsay\Bandicoot\Context\ValueSelfContext
+     * @return \YevgenGrytsay\Bandicoot\Context
      */
     protected function getContext()
     {

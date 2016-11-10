@@ -5,11 +5,7 @@
  */
 namespace YevgenGrytsay\Bandicoot;
 
-use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Context\PostProcessDecorator;
-use YevgenGrytsay\Bandicoot\MergeStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
-use YevgenGrytsay\Bandicoot\PropertyAccess;
 
 class Factory
 {

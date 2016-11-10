@@ -33,18 +33,18 @@ class UnwindContext implements Context
      *
      * @param \SplStack $stack
      * @return mixed
+     * @throws \Exception
      */
     public function run($value, \SplStack $stack)
     {
         /**
          * @var int|string $key
          * @var Context $context
+         * @throws \Exception
          */
         $result = array();
-        $merge = $this->createMerge();
         foreach ($this->config as $key => $context) {
-            $ret = $context->run($value, $stack);
-            $merge->merge($result, $ret, $key);
+            $result[$key] = $context->run($value, $stack);
         }
 
         return $result;
@@ -60,13 +60,5 @@ class UnwindContext implements Context
         $this->mergeType = $type;
 
         return $this;
-    }
-
-    /**
-     * @return MergeStrategyInterface
-     */
-    protected function createMerge()
-    {
-        return new FieldMergeStrategy();
     }
 }

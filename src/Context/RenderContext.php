@@ -3,7 +3,6 @@
 namespace YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Factory;
-use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 
 /**
  * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
@@ -11,10 +10,6 @@ use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
  */
 class RenderContext implements Context
 {
-    /**
-     * @var MergeStrategyInterface
-     */
-    protected $listMerge;
     /**
      * @var array
      */
@@ -41,27 +36,16 @@ class RenderContext implements Context
     }
 
     /**
-     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface|null $listMerge
-     *
-     * @return $this
-     */
-    public function merge(MergeStrategyInterface $listMerge = null)
-    {
-        $this->listMerge = $listMerge;
-
-        return $this;
-    }
-
-    /**
      * @param $value
      * @param \SplStack $stack
      * 
      * @return array
+     * @throws \Exception
      */
     public function run($value, \SplStack $stack)
     {
         $result = array();
-        $listMerge = $this->getListMerge();
+        $listMerge = $this->factory->getListMerge();
         /**
          * @var string|int $field
          * @var Context $context
@@ -87,18 +71,5 @@ class RenderContext implements Context
         }
 
         return $result;
-    }
-
-    /**
-     * @return \YevgenGrytsay\Bandicoot\MergeStrategy
-     */
-    protected function getListMerge()
-    {
-        $merge = $this->listMerge;
-        if (!$merge) {
-            $merge = $this->factory->getListMerge();
-        }
-
-        return $merge;
     }
 }

@@ -3,7 +3,6 @@
 namespace YevgenGrytsay\Bandicoot;
 use YevgenGrytsay\Bandicoot\Context\CallableContext;
 use YevgenGrytsay\Bandicoot\Context\ConstantContext;
-use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Context\FromMapContext;
 use YevgenGrytsay\Bandicoot\Context\IteratorContext;
 use YevgenGrytsay\Bandicoot\Context\ListContext;
@@ -14,7 +13,6 @@ use YevgenGrytsay\Bandicoot\Context\UnwindContext;
 use YevgenGrytsay\Bandicoot\Context\ValueContext;
 use YevgenGrytsay\Bandicoot\Context\ValueSelfContext;
 use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
-use YevgenGrytsay\Bandicoot\PropertyAccess;
 
 /**
  * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
@@ -45,6 +43,7 @@ class Builder
     /**
      * @param array $config
      * @return RenderContext
+     * @throws \Exception
      */
     public function render(array $config)
     {
@@ -54,6 +53,7 @@ class Builder
     /**
      * @param array $config
      * @return \Closure
+     * @throws \Exception
      */
     public function describe(array $config)
     {
@@ -70,9 +70,10 @@ class Builder
 
     /**
      * @param \Iterator $data
-     * @param array     $renderConfig
+     * @param array $renderConfig
      *
      * @return \YevgenGrytsay\Bandicoot\Context\IteratorContext
+     * @throws \Exception
      */
     public function each(\Iterator $data, array $renderConfig)
     {
@@ -158,6 +159,7 @@ class Builder
      * @param $property
      * @param array $config
      * @return ListContext
+     * @throws \Exception
      */
     public function eachUnwind($property, array $config)
     {
@@ -169,6 +171,7 @@ class Builder
      * @param array  $renderConfig
      *
      * @return \YevgenGrytsay\Bandicoot\Context\UnwindArrayContext
+     * @throws \Exception
      */
     public function unwindArray($property, array $renderConfig = null)
     {

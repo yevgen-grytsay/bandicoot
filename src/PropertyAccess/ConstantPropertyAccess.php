@@ -36,6 +36,7 @@ class ConstantPropertyAccess
      * @param $arrayOrObject
      *
      * @return mixed
+     * @throws \Exception
      */
     public function getValue($arrayOrObject)
     {

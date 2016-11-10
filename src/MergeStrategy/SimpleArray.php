@@ -12,16 +12,16 @@ use YevgenGrytsay\Bandicoot\MergeStrategy;
 class SimpleArray implements MergeStrategy
 {
     /**
-     * @param       $result
+     * @param array $result
      * @param array $list
-     * @param       $key
+     * @param $key
      */
-    public function merge(&$result, array $list, $key)
+    public function merge(array &$result, array $list, $key)
     {
+        if (!array_key_exists($key, $result) && $list) {
+            $result[$key] = array();
+        }
         foreach ($list as $value) {
-            if (!array_key_exists($key, $result)) {
-                $result[$key] = array();
-            }
             $result[$key][] = $value;
         }
     }

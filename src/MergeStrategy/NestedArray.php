@@ -12,11 +12,11 @@ use YevgenGrytsay\Bandicoot\MergeStrategy;
 class NestedArray implements MergeStrategy
 {
     /**
-     * @param       $result
+     * @param array $result
      * @param array $list
-     * @param       $key
+     * @param $key
      */
-    public function merge(&$result, array $list, $key)
+    public function merge(array &$result, array $list, $key)
     {
         foreach ($list as $value) {
             $result[] = array($key => $value);

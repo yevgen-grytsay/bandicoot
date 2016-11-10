@@ -2,9 +2,6 @@
 
 namespace YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\MergeStrategy\ArrayPushMergeStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 
 /**
  * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
@@ -32,6 +29,7 @@ class ListContext implements Context
      *
      * @param \SplStack $stack
      * @return mixed
+     * @throws \Exception
      */
     public function run($value, \SplStack $stack)
     {

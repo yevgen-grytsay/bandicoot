@@ -47,6 +47,7 @@ class FromMapContext implements Context
      *
      * @param \SplStack $stack
      * @return mixed
+     * @throws \Exception
      */
     public function run($value, \SplStack $stack)
     {

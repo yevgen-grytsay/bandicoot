@@ -29,6 +29,7 @@ class RendererFactory
     /**
      * @param array $config
      * @return RenderContext
+     * @throws \Exception
      */
     public function createFromConfig(array $config)
     {
