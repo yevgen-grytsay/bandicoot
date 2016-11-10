@@ -3,7 +3,7 @@
   "description": "Data transformation",
   "minimum-stability": "stable",
   "keywords": [
-    "transform"
+    "transform", "xml"
   ],
   "license": "BSD-3-Clause",
   "authors": [
@@ -13,7 +13,7 @@
     }
   ],
   "require": {
-    "php": ">=5.3.0"
+    "php": ">=5.4.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.6",

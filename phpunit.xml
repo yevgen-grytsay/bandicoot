@@ -1,10 +1,10 @@
 <phpunit
         printerClass="PHPUnit_TextUI_ResultPrinter"
-        bootstrap="../vendor/autoload.php"
+        bootstrap="vendor/autoload.php"
         >
     <testsuites>
         <testsuite name="Default Test Suite">
-            <directory>.</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
