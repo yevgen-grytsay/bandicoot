@@ -1,11 +1,12 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
+use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
 
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 02.10.15
  */
 class UnwindArrayContext implements Context
@@ -23,7 +24,7 @@ class UnwindArrayContext implements Context
      * UnwindArrayContext constructor.
      *
      * @param \YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess $accessor
-     * @param \YevgenGrytsay\Bandicoot\Context\Context|null         $context
+     * @param \YevgenGrytsay\Bandicoot\Context|null         $context
      */
     public function __construct(ConstantPropertyAccess $accessor, Context $context = null)
     {
@@ -69,7 +70,7 @@ class UnwindArrayContext implements Context
     }
 
     /**
-     * @param \YevgenGrytsay\Bandicoot\Context\Context $context
+     * @param \YevgenGrytsay\Bandicoot\Context $context
      *
      * @return $this
      */
@@ -90,7 +91,7 @@ class UnwindArrayContext implements Context
     }
 
     /**
-     * @return \YevgenGrytsay\Bandicoot\Context\Context
+     * @return \YevgenGrytsay\Bandicoot\Context
      */
     protected function createDefaultContext()
     {

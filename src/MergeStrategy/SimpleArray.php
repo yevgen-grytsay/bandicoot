@@ -7,7 +7,9 @@
 namespace YevgenGrytsay\Bandicoot\MergeStrategy;
 
 
-class SimpleArray implements ListMergeStrategyInterface
+use YevgenGrytsay\Bandicoot\MergeStrategy;
+
+class SimpleArray implements MergeStrategy
 {
     /**
      * @param       $result

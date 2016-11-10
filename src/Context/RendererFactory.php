@@ -1,12 +1,13 @@
 <?php
 /**
- * @author: Yevgen Grytsay hrytsai@mti.ua
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date: 13.04.16
  */
 
 namespace YevgenGrytsay\Bandicoot\Context;
 
 
+use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Factory;
 
 class RendererFactory

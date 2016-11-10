@@ -1,24 +1,24 @@
 <?php
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 05.10.15
  */
 namespace YevgenGrytsay\Bandicoot;
 
-use YevgenGrytsay\Bandicoot\Context\Context;
+use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Context\PostProcessDecorator;
-use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
+use YevgenGrytsay\Bandicoot\MergeStrategy;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
-use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
+use YevgenGrytsay\Bandicoot\PropertyAccess;
 
 class Factory
 {
     /**
-     * @var PropertyAccessInterface
+     * @var PropertyAccess
      */
     protected $propertyAccess;
     /**
-     * @var ListMergeStrategyInterface
+     * @var MergeStrategy
      */
     protected $listMerge;
     /**
@@ -29,17 +29,17 @@ class Factory
     /**
      * Factory constructor.
      *
-     * @param \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface $propertyAccess
-     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface   $listMerge
+     * @param \YevgenGrytsay\Bandicoot\PropertyAccess $propertyAccess
+     * @param \YevgenGrytsay\Bandicoot\MergeStrategy   $listMerge
      */
-    public function __construct(PropertyAccessInterface $propertyAccess, ListMergeStrategyInterface $listMerge)
+    public function __construct(PropertyAccess $propertyAccess, MergeStrategy $listMerge)
     {
         $this->propertyAccess = $propertyAccess;
         $this->listMerge = $listMerge;
     }
 
     /**
-     * @returns PropertyAccessInterface
+     * @returns PropertyAccess
      */
     public function getPropertyAccessEngine()
     {
@@ -47,7 +47,7 @@ class Factory
     }
 
     /**
-     * @return \YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface
+     * @return \YevgenGrytsay\Bandicoot\MergeStrategy
      */
     public function getListMerge()
     {

@@ -1,11 +1,10 @@
 <?php
 /**
- * @author: Yevgen Grytsay hrytsai@mti.ua
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date: 13.04.16
  */
 use YevgenGrytsay\Bandicoot\Builder;
 use YevgenGrytsay\Bandicoot\Factory;
-use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
 use YevgenGrytsay\Bandicoot\MergeStrategy\NestedArray;
 
 require_once __DIR__.'/../vendor/autoload.php';
@@ -140,7 +139,7 @@ class ArrayHelper
     }
 }
 
-class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface
+class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess
 {
     /**
      * @param $objectOrArray

@@ -102,7 +102,7 @@ class ArrayHelper
     }
 }
 
-class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface
+class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess
 {
     /**
      * @param $objectOrArray

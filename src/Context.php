@@ -1,9 +1,9 @@
 <?php
 
-namespace YevgenGrytsay\Bandicoot\Context;
+namespace YevgenGrytsay\Bandicoot;
 
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 02.10.15
  */
 interface Context

@@ -1,13 +1,13 @@
 <?php
 /**
- * @author: Yevgen Grytsay hrytsai@mti.ua
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 18.11.15
  */
 
-namespace YevgenGrytsay\Bandicoot\MergeStrategy;
+namespace YevgenGrytsay\Bandicoot;
 
 
-interface ListMergeStrategyInterface
+interface MergeStrategy
 {
     /**
      * @param       $result

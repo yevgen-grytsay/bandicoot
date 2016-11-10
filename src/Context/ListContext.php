@@ -1,12 +1,13 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
+use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\MergeStrategy\ArrayPushMergeStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface;
+use YevgenGrytsay\Bandicoot\MergeStrategy;
 use YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface;
 
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 02.10.15
  */
 class ListContext implements Context
@@ -19,7 +20,7 @@ class ListContext implements Context
     /**
      * ListContext constructor.
      *
-     * @param \YevgenGrytsay\Bandicoot\Context\Context                 $dataSource
+     * @param \YevgenGrytsay\Bandicoot\Context                 $dataSource
      */
     public function __construct(Context $dataSource)
     {

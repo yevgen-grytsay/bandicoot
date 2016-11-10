@@ -1,10 +1,11 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
-use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
+use YevgenGrytsay\Bandicoot\Context;
+use YevgenGrytsay\Bandicoot\PropertyAccess;
 
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 02.10.15
  */
 class ValueContext implements Context
@@ -14,7 +15,7 @@ class ValueContext implements Context
      */
     protected $accessor;
     /**
-     * @var PropertyAccessInterface
+     * @var PropertyAccess
      */
     private $propertyAccess;
 
@@ -22,9 +23,9 @@ class ValueContext implements Context
      * ValueContext constructor.
      *
      * @param string                                                          $accessor
-     * @param \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface $propertyAccess
+     * @param \YevgenGrytsay\Bandicoot\PropertyAccess $propertyAccess
      */
-    public function __construct($accessor, PropertyAccessInterface $propertyAccess)
+    public function __construct($accessor, PropertyAccess $propertyAccess)
     {
         $this->accessor = $accessor;
         $this->propertyAccess = $propertyAccess;

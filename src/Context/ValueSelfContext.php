@@ -1,9 +1,10 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
+use YevgenGrytsay\Bandicoot\Context;
 
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 02.10.15
  */
 class ValueSelfContext implements Context

@@ -1,13 +1,13 @@
 <?php
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 05.10.15
  */
 
-namespace YevgenGrytsay\Bandicoot\PropertyAccess;
+namespace YevgenGrytsay\Bandicoot;
 
 
-interface PropertyAccessInterface
+interface PropertyAccess
 {
     /**
      * @param $objectOrArray

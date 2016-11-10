@@ -1,9 +1,10 @@
 <?php
 
 namespace YevgenGrytsay\Bandicoot\Context;
+use YevgenGrytsay\Bandicoot\Context;
 
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 02.10.15
  */
 class IteratorContext implements Context
@@ -21,7 +22,7 @@ class IteratorContext implements Context
      * IteratorContext constructor.
      *
      * @param \Iterator                                                         $iterator
-     * @param \YevgenGrytsay\Bandicoot\Context\Context                 $context
+     * @param \YevgenGrytsay\Bandicoot\Context                 $context
      */
     public function __construct(\Iterator $iterator, Context $context)
     {

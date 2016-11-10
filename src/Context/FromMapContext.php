@@ -1,12 +1,13 @@
 <?php
 /**
- * @author: Yevgen Grytsay hrytsai@mti.ua
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date: 11.04.16
  */
 
 namespace YevgenGrytsay\Bandicoot\Context;
 
 
+use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
 
 class FromMapContext implements Context

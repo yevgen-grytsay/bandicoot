@@ -1,16 +1,18 @@
 <?php
 /**
- * @author: Yevgen Grytsay hrytsai@mti.ua
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 19.11.15
  */
 
 namespace YevgenGrytsay\Bandicoot\PropertyAccess;
 
 
+use YevgenGrytsay\Bandicoot\PropertyAccess;
+
 class ConstantPropertyAccess
 {
     /**
-     * @var PropertyAccessInterface
+     * @var PropertyAccess
      */
     private $engine;
     /**
@@ -21,10 +23,10 @@ class ConstantPropertyAccess
     /**
      * ConstantPropertyAccess constructor.
      *
-     * @param \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface $engine
+     * @param \YevgenGrytsay\Bandicoot\PropertyAccess $engine
      * @param                                                                 $property
      */
-    public function __construct(PropertyAccessInterface $engine, $property)
+    public function __construct(PropertyAccess $engine, $property)
     {
         $this->engine = $engine;
         $this->property = $property;

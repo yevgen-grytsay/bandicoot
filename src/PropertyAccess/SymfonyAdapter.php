@@ -10,8 +10,9 @@ namespace YevgenGrytsay\Bandicoot\PropertyAccess;
 
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use YevgenGrytsay\Bandicoot\PropertyAccess;
 
-class SymfonyAdapter implements PropertyAccessInterface
+class SymfonyAdapter implements PropertyAccess
 {
     /**
      * @var PropertyAccessorInterface

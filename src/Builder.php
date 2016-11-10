@@ -3,7 +3,7 @@
 namespace YevgenGrytsay\Bandicoot;
 use YevgenGrytsay\Bandicoot\Context\CallableContext;
 use YevgenGrytsay\Bandicoot\Context\ConstantContext;
-use YevgenGrytsay\Bandicoot\Context\Context;
+use YevgenGrytsay\Bandicoot\Context;
 use YevgenGrytsay\Bandicoot\Context\FromMapContext;
 use YevgenGrytsay\Bandicoot\Context\IteratorContext;
 use YevgenGrytsay\Bandicoot\Context\ListContext;
@@ -14,10 +14,10 @@ use YevgenGrytsay\Bandicoot\Context\UnwindContext;
 use YevgenGrytsay\Bandicoot\Context\ValueContext;
 use YevgenGrytsay\Bandicoot\Context\ValueSelfContext;
 use YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess;
-use YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface;
+use YevgenGrytsay\Bandicoot\PropertyAccess;
 
 /**
- * @author: Yevgen Grytsay <hrytsai@mti.ua>
+ * @author: Yevgen Grytsay <yevgen_grytsay@mail.ru>
  * @date  : 02.10.15
  */
 class Builder
@@ -109,7 +109,7 @@ class Builder
      */
     public function ifElse($property, $value, $fallback)
     {
-        if (!$property instanceof PropertyAccessInterface) {
+        if (!$property instanceof PropertyAccess) {
             $property = new ConstantPropertyAccess($this->factory->getPropertyAccessEngine(), $property);
         }
         
@@ -134,7 +134,7 @@ class Builder
         } else {
             $eq = function($a, $b) { return $a == $b; };
         }
-        if (!$property instanceof PropertyAccessInterface) {
+        if (!$property instanceof PropertyAccess) {
             $property = new ConstantPropertyAccess($this->factory->getPropertyAccessEngine(), $property);
         }
 
@@ -219,7 +219,7 @@ class Builder
     }
 
     /**
-     * @return \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface
+     * @return \YevgenGrytsay\Bandicoot\PropertyAccess
      */
     private function getPropertyAccessEngine()
     {

@@ -7,7 +7,9 @@
 namespace YevgenGrytsay\Bandicoot\MergeStrategy;
 
 
-class NestedArray implements ListMergeStrategyInterface
+use YevgenGrytsay\Bandicoot\MergeStrategy;
+
+class NestedArray implements MergeStrategy
 {
     /**
      * @param       $result
