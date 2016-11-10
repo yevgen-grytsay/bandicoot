@@ -7,9 +7,7 @@
  */
 use YevgenGrytsay\Bandicoot\Builder;
 use YevgenGrytsay\Bandicoot\Factory;
-use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy\NestedArrayMergeStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\NestedArray;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -18,7 +16,7 @@ $dataSource = new ArrayIterator(array(
     array('jde' => 98765, 'name' => 'Asus ROG Sica', 'img' => array('http://image2.jpg'))
 ));
 
-class A1_Helper_Xml
+class XmlHelper
 {
     /**
      * Array -> Xml
@@ -118,10 +116,7 @@ class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess\P
     }
 }
 
-$merge = new FieldMergeStrategy();
-$nestedMerge = new NestedArrayMergeStrategy();
-$listMerge = new MergeEachStrategy($nestedMerge);
-$factory = new Factory(new DefaultPropertyAccess(), $merge, $listMerge);
+$factory = new Factory(new DefaultPropertyAccess(), new NestedArray());
 $b = new Builder($factory);
 
 $render = $b->describe([
@@ -148,5 +143,5 @@ $render = $b->describe([
 $result = $render();
 var_dump($result);
 
-$result = A1_Helper_Xml::arrayToXml($result);
+$result = XmlHelper::arrayToXml($result);
 var_dump($result);

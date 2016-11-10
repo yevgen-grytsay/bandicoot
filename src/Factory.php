@@ -18,10 +18,6 @@ class Factory
      */
     protected $propertyAccess;
     /**
-     * @var MergeStrategyInterface
-     */
-    protected $merge;
-    /**
      * @var ListMergeStrategyInterface
      */
     protected $listMerge;
@@ -34,13 +30,11 @@ class Factory
      * Factory constructor.
      *
      * @param \YevgenGrytsay\Bandicoot\PropertyAccess\PropertyAccessInterface $propertyAccess
-     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface   $merge
      * @param \YevgenGrytsay\Bandicoot\MergeStrategy\ListMergeStrategyInterface   $listMerge
      */
-    public function __construct(PropertyAccessInterface $propertyAccess, MergeStrategyInterface $merge, ListMergeStrategyInterface $listMerge)
+    public function __construct(PropertyAccessInterface $propertyAccess, ListMergeStrategyInterface $listMerge)
     {
         $this->propertyAccess = $propertyAccess;
-        $this->merge = $merge;
         $this->listMerge = $listMerge;
     }
 
@@ -50,14 +44,6 @@ class Factory
     public function getPropertyAccessEngine()
     {
         return $this->propertyAccess;
-    }
-
-    /**
-     * @return \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface
-     */
-    public function getMerge()
-    {
-        return $this->merge;
     }
 
     /**

@@ -15,21 +15,15 @@ class ListContext implements Context
      * @var Context
      */
     protected $dataSource;
-    /**
-     * @var \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface
-     */
-    private $merge;
 
     /**
      * ListContext constructor.
      *
      * @param \YevgenGrytsay\Bandicoot\Context\Context                 $dataSource
-     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface $merge
      */
-    public function __construct(Context $dataSource, MergeStrategyInterface $merge)
+    public function __construct(Context $dataSource)
     {
         $this->dataSource = $dataSource;
-        $this->merge = $merge;
     }
 
     /**
@@ -42,7 +36,7 @@ class ListContext implements Context
     {
         $result = array();
         foreach ($this->dataSource->run($value, $stack) as $key => $item) {
-            $this->merge->merge($result, $item, $key);
+            $result[$key] = $item;
         }
 
         return $result;

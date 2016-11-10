@@ -18,32 +18,26 @@ class UnwindArrayContext implements Context
      * @var Context
      */
     protected $context;
-    /**
-     * @var \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface
-     */
-    private $merge;
 
     /**
      * UnwindArrayContext constructor.
      *
      * @param \YevgenGrytsay\Bandicoot\PropertyAccess\ConstantPropertyAccess $accessor
-     * @param \YevgenGrytsay\Bandicoot\MergeStrategy\MergeStrategyInterface  $merge
      * @param \YevgenGrytsay\Bandicoot\Context\Context|null         $context
      */
-    public function __construct(ConstantPropertyAccess $accessor, MergeStrategyInterface $merge, Context $context = null)
+    public function __construct(ConstantPropertyAccess $accessor, Context $context = null)
     {
         $this->accessor = $accessor;
-        $this->merge = $merge;
         $this->context = $context;
     }
 
     /**
-     * @param $value
+     * @param $input
      *
      * @param \SplStack $stack
      * @return mixed
      */
-    public function run($value, \SplStack $stack)
+    public function run($input, \SplStack $stack)
     {
         /**
          * @var int|string $key
@@ -52,7 +46,7 @@ class UnwindArrayContext implements Context
         $result = array();
         $context = $this->getContext();
         $i = 0;
-        foreach ($this->_iterator($value) as $value) {
+        foreach ($this->_iterator($input) as $value) {
             $ret = $context->run($value, $stack);
 //            $this->merge->merge($result, $ret, $i);
             $result[] = $ret;

@@ -5,9 +5,8 @@
  */
 use YevgenGrytsay\Bandicoot\Builder;
 use YevgenGrytsay\Bandicoot\Factory;
-use YevgenGrytsay\Bandicoot\MergeStrategy\FieldArrayMergeStrategy;
 use YevgenGrytsay\Bandicoot\MergeStrategy\FieldMergeStrategy;
-use YevgenGrytsay\Bandicoot\MergeStrategy\MergeEachStrategy;
+use YevgenGrytsay\Bandicoot\MergeStrategy\NestedArray;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -155,10 +154,7 @@ class DefaultPropertyAccess implements \YevgenGrytsay\Bandicoot\PropertyAccess\P
     }
 }
 
-$merge = new FieldMergeStrategy();
-$nestedMerge = new FieldArrayMergeStrategy();
-$listMerge = new MergeEachStrategy($nestedMerge);
-$factory = new Factory(new DefaultPropertyAccess(), $merge, $listMerge);
+$factory = new Factory(new DefaultPropertyAccess(), new NestedArray());
 $factory->setHelperResolver(array(
     'cdata' => function($value) {
         return sprintf('<![CDATA[%s]]>', $value);

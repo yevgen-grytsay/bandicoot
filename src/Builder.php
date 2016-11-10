@@ -78,7 +78,7 @@ class Builder
     {
         $render = $this->render($renderConfig);
 
-        return new IteratorContext($data, $render, $this->factory->getMerge());
+        return new IteratorContext($data, $render);
     }
 
     /**
@@ -161,7 +161,7 @@ class Builder
      */
     public function eachUnwind($property, array $config)
     {
-        return new ListContext($this->unwindArray($property, $config), $this->factory->getMerge());
+        return new ListContext($this->unwindArray($property, $config));
     }
     
     /**
@@ -178,7 +178,7 @@ class Builder
         }
         $accessor = new ConstantPropertyAccess($this->getPropertyAccessEngine(), $property);
 
-        return new UnwindArrayContext($accessor, $this->factory->getMerge(), $renderer);
+        return new UnwindArrayContext($accessor, $renderer);
     }
 
     /**
@@ -215,7 +215,7 @@ class Builder
      */
     public function _list(Context $context)
     {
-        return new ListContext($context, $this->factory->getMerge());
+        return new ListContext($context);
     }
 
     /**
