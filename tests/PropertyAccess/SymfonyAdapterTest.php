@@ -15,7 +15,7 @@ class SymfonyAdapterTest extends \PHPUnit_Framework_TestCase
     public function testShouldCallSymfonyAccessorWithProperArguments()
     {
         $object = new \stdClass();
-        $accessor = $this->getMock(PropertyAccessorInterface::class);
+        $accessor = $this->getMock('\Symfony\Component\PropertyAccess\PropertyAccessorInterface');
         $accessor->expects($this->once())
             ->method('getValue')
             ->with($object, 'field');
@@ -26,7 +26,7 @@ class SymfonyAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldReturnValue()
     {
-        $accessor = $this->getMock(PropertyAccessorInterface::class);
+        $accessor = $this->getMock('\Symfony\Component\PropertyAccess\PropertyAccessorInterface');
         $accessor->expects($this->once())
             ->method('getValue')
             ->willReturn('value');
